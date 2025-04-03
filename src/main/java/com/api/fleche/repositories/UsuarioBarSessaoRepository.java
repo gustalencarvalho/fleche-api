@@ -1,5 +1,6 @@
 package com.api.fleche.repositories;
 
+import com.api.fleche.dtos.UsuarioDto;
 import com.api.fleche.models.UsuarioBarSessao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,4 +23,8 @@ public interface UsuarioBarSessaoRepository extends JpaRepository<UsuarioBarSess
 
     @Query(value = "SELECT BAR_ID FROM USUARIO_BAR_SESSAO WHERE USUARIO_ID = ?", nativeQuery = true)
     Long findByBarId(Long usuarioId);
+
+    @Query(value = "SELECT QR_CODE FROM TB_BARES WHERE ID = ?", nativeQuery = true)
+    String qrCodeBar(Long barId);
+
 }

@@ -1,5 +1,6 @@
 package com.api.fleche.controllers;
 
+import com.api.fleche.dtos.UsuarioBarDto;
 import com.api.fleche.dtos.UsuarioBarSessaoDto;
 import com.api.fleche.enums.StatusUsuarioBar;
 import com.api.fleche.models.UsuarioBarSessao;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @RestController
 @RequestMapping("/sessao")
@@ -29,7 +31,7 @@ public class UsuarioBarSessaoController {
     public ResponseEntity<Object> checkinUsuario(@RequestBody @Valid UsuarioBarSessaoDto usuarioBarSessaoDto) {
         String status = usuarioBarSessaoService.findByStatusUsuarioBar(usuarioBarSessaoDto.getUsuarioId());
 
-        if (status.equals("ONLINE") && !status.isEmpty()) {
+        if (status != null && !status.isEmpty() && status.equals("ONLINE")) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Usuário já está ativo em outro bar!");
         }
 
@@ -51,9 +53,14 @@ public class UsuarioBarSessaoController {
         usuarioBarSessaoModel.setDataAtivacao(LocalDateTime.now(ZoneId.of("UTC")));
         usuarioBarSessaoModel.setDataExpiracao(LocalDateTime.now().plusHours(4));
         usuarioBarSessaoModel.setStatusUsuarioBar(StatusUsuarioBar.ONLINE);
-        usuarioBarSessaoService.realizarCheckin(usuario.getId(), bar.getId());
 
-        return ResponseEntity.status(HttpStatus.OK).body("Checkin realizado com sucesso!");
+        if (status == null) {
+            usuarioBarSessaoService.salvar(usuarioBarSessaoModel);
+        } else {
+            usuarioBarSessaoService.realizarCheckin(usuario.getId(), bar.getId());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("Check-in realizado com sucesso!");
     }
 
     @PatchMapping("/checkout/{usuarioId}")
@@ -71,4 +78,24 @@ public class UsuarioBarSessaoController {
         usuarioBarSessaoService.realizarCheckout(usuarioId, bar);
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
+
+    @GetMapping("/usuarios-online/{usuarioId}")
+    public ResponseEntity<List<UsuarioBarDto>> usuariosParaListar(@PathVariable Long usuarioId) {
+        var usuario = usuarioService.findById(usuarioId);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        var bar = usuarioBarSessaoService.findByBarId(usuarioId);
+        if (bar == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        String qrCode = usuarioBarSessaoService.qrCodeBar(bar);
+        List<UsuarioBarDto> usuarioBarDtos = usuarioBarSessaoService.usuariosParaListar(qrCode, usuarioId);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioBarDtos);
+    }
+
 }
