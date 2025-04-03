@@ -2,17 +2,16 @@ package com.api.fleche.services.Impl;
 
 import com.api.fleche.dao.UsuarioBaSessaoDao;
 import com.api.fleche.dtos.UsuarioBarDto;
-import com.api.fleche.dtos.UsuarioDto;
 import com.api.fleche.enums.StatusUsuarioBar;
 import com.api.fleche.models.UsuarioBarSessao;
 import com.api.fleche.repositories.UsuarioBarSessaoRepository;
 import com.api.fleche.services.UsuarioBarSessaoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +55,8 @@ public class UsuarioBarSessaoServiceImpl implements UsuarioBarSessaoService {
     }
 
     @Override
-    public List<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId) {
-        return usuarioBaSessaoDao.usuariosParaListar(qrCode, usuarioId);
+    public Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable) {
+        return usuarioBaSessaoDao.usuariosParaListar(qrCode, usuarioId, pageable);
     }
 
 }

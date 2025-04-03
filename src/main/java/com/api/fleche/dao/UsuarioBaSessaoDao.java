@@ -6,6 +6,9 @@ import com.api.fleche.dtos.UsuarioDto;
 import com.api.fleche.repositories.ComandosSqlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +22,7 @@ public class UsuarioBaSessaoDao {
     private final JdbcTemplate jdbcTemplate;
     private final ComandosSqlRepository comandosSqlRepository;
 
-    public List<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId) {
+    public Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable) {
         String sql = comandosSqlRepository.listaUsuarios().getCmdSql();
 
         List<UsuarioBarDto> resultados = jdbcTemplate.query(sql, new Object[]{qrCode, usuarioId}, (rs, rowNum) ->
@@ -30,7 +33,19 @@ public class UsuarioBaSessaoDao {
                 )
         );
 
-        return resultados.isEmpty() ? Collections.emptyList() : resultados;
+        // Caso a lista esteja vazia, retorna uma página vazia
+        if (resultados.isEmpty()) {
+            return Page.empty(pageable);
+        }
+
+        // Configura os índices de início e fim com base na paginação
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), resultados.size());
+
+        List<UsuarioBarDto> usuariosPaginados = resultados.subList(start, end);
+
+        return new PageImpl<>(usuariosPaginados, pageable, resultados.size());
     }
+
 
 }

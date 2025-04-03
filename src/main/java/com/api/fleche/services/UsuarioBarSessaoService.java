@@ -1,12 +1,9 @@
 package com.api.fleche.services;
 
 import com.api.fleche.dtos.UsuarioBarDto;
-import com.api.fleche.dtos.UsuarioDto;
 import com.api.fleche.models.UsuarioBarSessao;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UsuarioBarSessaoService {
     boolean findByUsuarioIdAndDataExpiracaoAfter(Long usuarioId);
@@ -15,6 +12,6 @@ public interface UsuarioBarSessaoService {
     void realizarCheckout(Long usuarioId, Long barId);
     Long findByBarId(Long usuarioId);
     void salvar(UsuarioBarSessao usuarioBarSessao);
-    List<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId);
+    Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable);
     String qrCodeBar(Long barId);
 }

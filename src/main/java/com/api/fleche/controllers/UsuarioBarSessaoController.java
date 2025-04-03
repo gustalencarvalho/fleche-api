@@ -9,6 +9,9 @@ import com.api.fleche.services.UsuarioBarSessaoService;
 import com.api.fleche.services.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,8 +76,9 @@ public class UsuarioBarSessaoController {
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
 
-    @GetMapping("/usuarios-online/{usuarioId}")
-    public ResponseEntity<List<UsuarioBarDto>> usuariosParaListar(@PathVariable Long usuarioId) {
+    @GetMapping("/online/{usuarioId}")
+    public ResponseEntity<Page<UsuarioBarDto>> usuariosParaListar(@PathVariable Long usuarioId, @RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
+
         var usuario = usuarioService.findById(usuarioId);
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -84,9 +88,12 @@ public class UsuarioBarSessaoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         String qrCode = usuarioBarSessaoService.qrCodeBar(bar);
-        List<UsuarioBarDto> usuarioBarDtos = usuarioBarSessaoService.usuariosParaListar(qrCode, usuarioId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioBarDtos);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UsuarioBarDto> usuarioBarDtos = usuarioBarSessaoService.usuariosParaListar(qrCode, usuarioId, pageable);
+
+        return ResponseEntity.ok(usuarioBarDtos);
     }
+
 
 }
