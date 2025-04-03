@@ -1,9 +1,11 @@
 package com.api.fleche.services.Impl;
 
+import com.api.fleche.dao.UsuarioDao;
+import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.Usuario;
 import com.api.fleche.repositories.UsuarioRepository;
 import com.api.fleche.services.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,10 +13,11 @@ import java.time.Period;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioDao usuarioDao;
 
     @Override
     public Usuario criarConta(Usuario usuario) {
@@ -46,6 +49,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario findById(Long usuarioId) {
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
         return usuario.get();
+    }
+
+    @Override
+    public UsuarioDadosDto buscarDadosUsuario(String numero) {
+        return usuarioDao.buscarDadosUsuario(numero);
     }
 
 }

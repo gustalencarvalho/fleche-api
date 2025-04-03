@@ -1,5 +1,6 @@
 package com.api.fleche.services;
 
+import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,5 @@ public interface UsuarioService {
     boolean existsByNumero(String numero);
     boolean verificaIdade(LocalDate dataNascimento);
     Usuario findById(Long usuarioId);
+    UsuarioDadosDto buscarDadosUsuario(String numero);
 }

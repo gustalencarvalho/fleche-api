@@ -55,4 +55,6 @@ public class UsuarioBarSessaoController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Checkin realizado com sucesso!");
     }
+
+    //@PatchMapping("/")
 }
