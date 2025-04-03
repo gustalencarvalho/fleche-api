@@ -6,6 +6,8 @@ import com.api.fleche.services.BarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BarServiveImpl implements BarService {
 
@@ -20,6 +22,12 @@ public class BarServiveImpl implements BarService {
     @Override
     public boolean existsByCnpj(String cnpj) {
         return barRepository.existsByCnpj(cnpj);
+    }
+
+    @Override
+    public Bar findbyId(Long barId) {
+        Optional<Bar> bar = barRepository.findById(barId);
+        return bar.get();
     }
 
 }

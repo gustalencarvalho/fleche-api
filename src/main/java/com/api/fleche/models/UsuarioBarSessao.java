@@ -1,5 +1,6 @@
 package com.api.fleche.models;
 
+import com.api.fleche.enums.StatusUsuarioBar;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -28,6 +29,11 @@ public class UsuarioBarSessao {
 
     @Column(nullable = false)
     private LocalDateTime dataExpiracao;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusUsuarioBar statusUsuarioBar;
+
 }
 
 

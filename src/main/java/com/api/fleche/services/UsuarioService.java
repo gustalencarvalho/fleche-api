@@ -11,4 +11,5 @@ public interface UsuarioService {
     boolean existsByEmail(String email);
     boolean existsByNumero(String numero);
     boolean verificaIdade(LocalDate dataNascimento);
+    Usuario findById(Long usuarioId);
 }

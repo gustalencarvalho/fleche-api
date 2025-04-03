@@ -4,6 +4,7 @@ import com.api.fleche.dtos.BarRegistroDto;
 import com.api.fleche.models.Bar;
 import com.api.fleche.services.BarService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,11 @@ import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/bares")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class BarController {
 
-    @Autowired
-    private BarService barService;
+    private final BarService barService;
 
     @PostMapping("/singup")
     public ResponseEntity<Object> registrarBar(@RequestBody @Valid BarRegistroDto barRegistroDto) {

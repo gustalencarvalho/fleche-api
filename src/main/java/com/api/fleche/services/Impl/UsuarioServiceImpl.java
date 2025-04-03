@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -39,6 +40,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         Period idade = Period.between(dataNascimento, hoje);
 
         return idade.getYears() >= 18;
+    }
+
+    @Override
+    public Usuario findById(Long usuarioId) {
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+        return usuario.get();
     }
 
 }
