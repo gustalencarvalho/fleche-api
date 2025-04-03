@@ -35,11 +35,11 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Precisa ter 18 anos ou mais");
         }
 
-        var usuario = new Usuario();
-        BeanUtils.copyProperties(usuarioDto, usuario);
-        usuario.setDataDeCriacao(LocalDateTime.now(ZoneId.of("UTC")));
-        usuarioService.criarConta(usuario);
+        var usuarioModel = new Usuario();
+        BeanUtils.copyProperties(usuarioDto, usuarioModel);
+        usuarioModel.setDataDeCriacao(LocalDateTime.now(ZoneId.of("UTC")));
+        usuarioService.criarConta(usuarioModel);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioModel);
     }
 }
