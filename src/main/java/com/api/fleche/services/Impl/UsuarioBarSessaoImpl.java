@@ -35,4 +35,9 @@ public class UsuarioBarSessaoImpl implements UsuarioBarSessaoService {
         usuarioBarSessaoRepository.realizarCheckinOuCheckout(StatusUsuarioBar.OFFLINE.name(), barId,  usuarioId);
     }
 
+    @Override
+    public Long findByBarId(Long usuarioId) {
+        return usuarioBarSessaoRepository.findByBarId(usuarioId);
+    }
+
 }

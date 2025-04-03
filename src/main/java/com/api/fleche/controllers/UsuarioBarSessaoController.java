@@ -59,13 +59,16 @@ public class UsuarioBarSessaoController {
     @PatchMapping("/checkout/{usuarioId}")
     public ResponseEntity<Object> checkoutUsuario(@PathVariable Long usuarioId) {
         var usuario = usuarioService.findById(usuarioId);
-
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
         }
 
-        //TODO: ADICIONAR O BAR_ID PARA FAZER CHECKOUT
-        usuarioBarSessaoService.realizarCheckout(usuarioId, null);
+        var bar = usuarioBarSessaoService.findByBarId(usuarioId);
+        if (bar == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");
+        }
+
+        usuarioBarSessaoService.realizarCheckout(usuarioId, bar);
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
 }

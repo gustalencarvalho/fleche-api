@@ -26,11 +26,9 @@ public class AuthenticationController {
         if (usuarioService.existsByEmail(usuarioDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Email já cadastrado!");
         }
-
         if (usuarioService.existsByNumero(usuarioDto.getNumero())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Telefone já cadastrado!");
         }
-
         if (!usuarioService.verificaIdade(usuarioDto.getDataNascimento())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Precisa ter 18 anos ou mais");
         }

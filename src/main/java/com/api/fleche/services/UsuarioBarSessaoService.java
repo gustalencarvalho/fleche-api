@@ -10,4 +10,5 @@ public interface UsuarioBarSessaoService {
     String findByStatusUsuarioBar(Long usuarioId);
     void realizarCheckin(Long usuarioId, Long barId);
     void realizarCheckout(Long usuarioId, Long barId);
+    Long findByBarId(Long usuarioId);
 }
