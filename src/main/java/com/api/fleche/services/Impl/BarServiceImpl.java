@@ -28,8 +28,8 @@ public class BarServiceImpl implements BarService {
     }
 
     @Override
-    public Bar findbyId(Long barId) {
-        Optional<Bar> bar = barRepository.findById(barId);
+    public Bar findbyQrCode(String qrCode) {
+        Optional<Bar> bar = barRepository.findByQrCode(qrCode);
         return bar.get();
     }
 

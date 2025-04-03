@@ -33,7 +33,7 @@ public class UsuarioBarSessaoController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Usuário já está ativo em outro bar!");
         }
 
-        var bar = barService.findbyId(usuarioBarSessaoDto.getBarId());
+        var bar = barService.findbyQrCode(usuarioBarSessaoDto.getQrCode());
 
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");

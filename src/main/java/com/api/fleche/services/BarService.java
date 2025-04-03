@@ -8,6 +8,6 @@ import java.util.List;
 public interface BarService {
     Bar registrarBar(Bar bar);
     boolean existsByCnpj(String cnpj);
-    Bar findbyId(Long barId);
+    Bar findbyQrCode(String qrCode);
     List<BaresDto> findAll();
 }

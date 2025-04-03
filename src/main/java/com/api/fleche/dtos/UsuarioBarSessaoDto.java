@@ -12,7 +12,7 @@ public class UsuarioBarSessaoDto {
     private Long usuarioId;
 
     @NotNull
-    private Long barId;
+    private String qrCode;
 
 }
 
