@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: fleche-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fleche
+    username: postgres
+    password: 15421542
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      jdbc:
+        lob.non-contextual-creation: true
+    properties:
+      hibernate:
+        show_sql: true
