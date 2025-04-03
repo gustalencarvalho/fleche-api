@@ -56,5 +56,15 @@ public class UsuarioBarSessaoController {
         return ResponseEntity.status(HttpStatus.OK).body("Checkin realizado com sucesso!");
     }
 
-    //@PatchMapping("/")
+    @PatchMapping("/checkout/{usuarioId}")
+    public ResponseEntity<Object> checkoutUsuario(@PathVariable Long usuarioId) {
+        var usuario = usuarioService.findById(usuarioId);
+
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
+        }
+
+        usuarioBarSessaoService.realizarCheckout(usuarioId);
+        return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
+    }
 }

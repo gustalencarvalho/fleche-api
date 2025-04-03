@@ -1,5 +1,6 @@
 package com.api.fleche.services.Impl;
 
+import com.api.fleche.enums.StatusUsuarioBar;
 import com.api.fleche.models.UsuarioBarSessao;
 import com.api.fleche.repositories.UsuarioBarSessaoRepository;
 import com.api.fleche.services.UsuarioBarSessaoService;
@@ -28,6 +29,11 @@ public class UsuarioBarSessaoImpl implements UsuarioBarSessaoService {
     @Override
     public void realizarCheckin(UsuarioBarSessao usuarioBarSessao) {
         usuarioBarSessaoRepository.save(usuarioBarSessao);
+    }
+
+    @Override
+    public void realizarCheckout(Long usuarioId) {
+        usuarioBarSessaoRepository.realizarCheckout(StatusUsuarioBar.OFFLINE.name(), usuarioId);
     }
 
 }
