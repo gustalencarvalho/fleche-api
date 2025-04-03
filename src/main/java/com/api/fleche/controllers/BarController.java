@@ -30,7 +30,6 @@ public class BarController {
         if (barService.existsByCnpj(barRegistroDto.getCnpj())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: CNPJ já registrado na base de dados!");
         }
-
         var barModel = new Bar();
         BeanUtils.copyProperties(barRegistroDto, barModel);
         barModel.setDataRegistro(LocalDateTime.now(ZoneId.of("UTC")));

@@ -18,11 +18,9 @@ public class UsuarioController {
     @GetMapping("/dados/{numero}")
     public ResponseEntity<Object> buscarDadosDoUsuario(@PathVariable String numero) {
         var usuario = usuarioService.buscarDadosUsuario(numero);
-
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado!");
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 

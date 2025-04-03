@@ -30,23 +30,19 @@ public class UsuarioBarSessaoController {
     @PostMapping("/checkin")
     public ResponseEntity<Object> checkinUsuario(@RequestBody @Valid UsuarioBarSessaoDto usuarioBarSessaoDto) {
         String status = usuarioBarSessaoService.findByStatusUsuarioBar(usuarioBarSessaoDto.getUsuarioId());
-
         if (status != null && !status.isEmpty() && status.equals("ONLINE")) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Usuário já está ativo em outro bar!");
         }
-
         var bar = barService.findbyQrCode(usuarioBarSessaoDto.getQrCode());
 
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");
         }
-
         var usuario = usuarioService.findById(usuarioBarSessaoDto.getUsuarioId());
 
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
         }
-
         var usuarioBarSessaoModel = new UsuarioBarSessao();
         usuarioBarSessaoModel.setBar(bar);
         usuarioBarSessaoModel.setUsuario(usuario);
@@ -69,12 +65,10 @@ public class UsuarioBarSessaoController {
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
         }
-
         var bar = usuarioBarSessaoService.findByBarId(usuarioId);
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");
         }
-
         usuarioBarSessaoService.realizarCheckout(usuarioId, bar);
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
@@ -85,15 +79,12 @@ public class UsuarioBarSessaoController {
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
         var bar = usuarioBarSessaoService.findByBarId(usuarioId);
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
         String qrCode = usuarioBarSessaoService.qrCodeBar(bar);
         List<UsuarioBarDto> usuarioBarDtos = usuarioBarSessaoService.usuariosParaListar(qrCode, usuarioId);
-
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioBarDtos);
     }
