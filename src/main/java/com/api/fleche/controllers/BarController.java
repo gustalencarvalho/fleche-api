@@ -1,6 +1,7 @@
 package com.api.fleche.controllers;
 
 import com.api.fleche.dtos.BarRegistroDto;
+import com.api.fleche.dtos.BaresDto;
 import com.api.fleche.models.Bar;
 import com.api.fleche.services.BarService;
 import jakarta.validation.Valid;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bares")
@@ -34,6 +37,11 @@ public class BarController {
         barService.registrarBar(barModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(barModel);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<BaresDto>> buscaTodosBares() {
+        return ResponseEntity.status(HttpStatus.OK).body(barService.findAll());
     }
 
 }
