@@ -1,16 +1,18 @@
 package com.api.fleche.models;
 
-import com.api.fleche.dtos.Genero;
-import com.api.fleche.dtos.Preferencia;
-import com.api.fleche.dtos.Status;
+import com.api.fleche.enums.Genero;
+import com.api.fleche.enums.Preferencia;
+import com.api.fleche.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,8 +36,8 @@ public class Usuario implements Serializable {
     @Size(min = 10, max = 20)
     private String numero;
 
-    @Column(nullable = false)
-    private Integer idade;
+    @NotNull
+    private LocalDate dataNascimento;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

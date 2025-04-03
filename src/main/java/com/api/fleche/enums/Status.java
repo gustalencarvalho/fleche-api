@@ -1,4 +1,4 @@
-package com.api.fleche.dtos;
+package com.api.fleche.enums;
 
 public enum Status {
     ATIVO,
