@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class UsuarioBarSessaoImpl implements UsuarioBarSessaoService {
+public class UsuarioBarSessaoServiceImpl implements UsuarioBarSessaoService {
 
     @Autowired
     private UsuarioBarSessaoRepository usuarioBarSessaoRepository;

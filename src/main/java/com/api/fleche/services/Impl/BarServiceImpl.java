@@ -7,13 +7,12 @@ import com.api.fleche.services.BarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BarServiveImpl implements BarService {
+public class BarServiceImpl implements BarService {
 
     @Autowired
     private BarRepository barRepository;
@@ -41,6 +40,5 @@ public class BarServiveImpl implements BarService {
                 .map(bar -> new BaresDto(bar.getNome(), bar.getEndereco(), bar.getBairro(), bar.getCidade(), bar.getNumero()))
                 .collect(Collectors.toList());
     }
-
 
 }
