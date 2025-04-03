@@ -17,6 +17,6 @@ public interface UsuarioBarSessaoRepository extends JpaRepository<UsuarioBarSess
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE USUARIO_BAR_SESSAO SET STATUS_USUARIO_BAR = ? WHERE USUARIO_ID = ?", nativeQuery = true)
-    void realizarCheckout(String status, Long usuarioId);
+    @Query(value = "UPDATE USUARIO_BAR_SESSAO SET STATUS_USUARIO_BAR = ?, BAR_ID = ? WHERE USUARIO_ID = ?", nativeQuery = true)
+    void realizarCheckinOuCheckout(String status, Long barId, Long usuarioId);
 }

@@ -51,7 +51,7 @@ public class UsuarioBarSessaoController {
         usuarioBarSessaoModel.setDataAtivacao(LocalDateTime.now(ZoneId.of("UTC")));
         usuarioBarSessaoModel.setDataExpiracao(LocalDateTime.now().plusHours(4));
         usuarioBarSessaoModel.setStatusUsuarioBar(StatusUsuarioBar.ONLINE);
-        usuarioBarSessaoService.realizarCheckin(usuarioBarSessaoModel);
+        usuarioBarSessaoService.realizarCheckin(usuario.getId(), bar.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body("Checkin realizado com sucesso!");
     }
@@ -64,7 +64,8 @@ public class UsuarioBarSessaoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
         }
 
-        usuarioBarSessaoService.realizarCheckout(usuarioId);
+        //TODO: ADICIONAR O BAR_ID PARA FAZER CHECKOUT
+        usuarioBarSessaoService.realizarCheckout(usuarioId, null);
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
 }

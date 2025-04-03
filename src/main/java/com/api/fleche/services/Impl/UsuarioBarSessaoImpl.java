@@ -1,7 +1,6 @@
 package com.api.fleche.services.Impl;
 
 import com.api.fleche.enums.StatusUsuarioBar;
-import com.api.fleche.models.UsuarioBarSessao;
 import com.api.fleche.repositories.UsuarioBarSessaoRepository;
 import com.api.fleche.services.UsuarioBarSessaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +22,17 @@ public class UsuarioBarSessaoImpl implements UsuarioBarSessaoService {
     @Override
     public String findByStatusUsuarioBar(Long usuarioId) {
         String status = usuarioBarSessaoRepository.findByUsuarioId(usuarioId);
-        return status != null ? "ONLINE" : "OFFLINE";
+        return status == "ONLINE" ? status : "OFFLINE";
     }
 
     @Override
-    public void realizarCheckin(UsuarioBarSessao usuarioBarSessao) {
-        usuarioBarSessaoRepository.save(usuarioBarSessao);
+    public void realizarCheckin(Long usuarioId, Long barId) {
+        usuarioBarSessaoRepository.realizarCheckinOuCheckout(StatusUsuarioBar.ONLINE.name(), barId, usuarioId);
     }
 
     @Override
-    public void realizarCheckout(Long usuarioId) {
-        usuarioBarSessaoRepository.realizarCheckout(StatusUsuarioBar.OFFLINE.name(), usuarioId);
+    public void realizarCheckout(Long usuarioId, Long barId) {
+        usuarioBarSessaoRepository.realizarCheckinOuCheckout(StatusUsuarioBar.OFFLINE.name(), barId,  usuarioId);
     }
 
 }
