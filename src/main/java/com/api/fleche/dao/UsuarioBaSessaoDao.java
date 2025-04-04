@@ -27,18 +27,17 @@ public class UsuarioBaSessaoDao {
 
         List<UsuarioBarDto> resultados = jdbcTemplate.query(sql, new Object[]{qrCode, usuarioId}, (rs, rowNum) ->
                 new UsuarioBarDto(
+                        rs.getLong("ID"),
                         rs.getString("NOME"),
                         rs.getString("GENERO"),
                         rs.getInt("IDADE")
                 )
         );
 
-        // Caso a lista esteja vazia, retorna uma página vazia
         if (resultados.isEmpty()) {
             return Page.empty(pageable);
         }
 
-        // Configura os índices de início e fim com base na paginação
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), resultados.size());
 

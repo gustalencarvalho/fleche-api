@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioBarDto {
 
+    private Long id;
     private String nome;
     private String genero;
     private int idade;

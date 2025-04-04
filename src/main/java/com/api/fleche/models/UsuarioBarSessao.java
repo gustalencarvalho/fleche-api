@@ -3,6 +3,8 @@ package com.api.fleche.models;
 import com.api.fleche.enums.StatusUsuarioBar;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,7 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "usuario_bar_sessao", uniqueConstraints = {
         @UniqueConstraint(columnNames = "usuario_id")
 })
-public class UsuarioBarSessao {
+public class UsuarioBarSessao implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

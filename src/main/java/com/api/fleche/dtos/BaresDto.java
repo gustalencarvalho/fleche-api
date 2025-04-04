@@ -7,6 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class BaresDto {
 
+    private Long id;
     private String nome;
     private String endereco;
     private String bairro;

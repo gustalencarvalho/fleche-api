@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 
 @RestController
 @RequestMapping("/sessao")
@@ -78,7 +77,6 @@ public class UsuarioBarSessaoController {
 
     @GetMapping("/online/{usuarioId}")
     public ResponseEntity<Page<UsuarioBarDto>> usuariosParaListar(@PathVariable Long usuarioId, @RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
-
         var usuario = usuarioService.findById(usuarioId);
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -94,6 +92,5 @@ public class UsuarioBarSessaoController {
 
         return ResponseEntity.ok(usuarioBarDtos);
     }
-
 
 }

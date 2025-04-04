@@ -3,10 +3,13 @@ package com.api.fleche.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "TB_CMD")
 @Data
-public class ComandosSql {
+public class ComandosSql implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
