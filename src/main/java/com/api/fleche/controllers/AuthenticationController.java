@@ -15,7 +15,7 @@ import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:8100")
 public class AuthenticationController {
 
     @Autowired
@@ -40,4 +40,5 @@ public class AuthenticationController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioModel);
     }
+
 }

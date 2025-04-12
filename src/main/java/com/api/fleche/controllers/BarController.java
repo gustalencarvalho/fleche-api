@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/bares")
@@ -33,6 +34,7 @@ public class BarController {
         var barModel = new Bar();
         BeanUtils.copyProperties(barRegistroDto, barModel);
         barModel.setDataRegistro(LocalDateTime.now(ZoneId.of("UTC")));
+        barModel.setQrCode(UUID.randomUUID().toString());
         barService.registrarBar(barModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(barModel);

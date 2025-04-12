@@ -31,7 +31,6 @@ public class LikeController {
 
         Like like = likeService.darLike(usuarioOrigem, usuarioDestino, status);
 
-        // Verifica se houve um match
         if (status == StatusLike.LIKE && likeService.verificarMatch(usuarioOrigem, usuarioDestino)) {
             return ResponseEntity.ok("MATCH encontrado! 🎉");
         }

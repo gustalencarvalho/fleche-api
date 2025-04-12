@@ -21,6 +21,7 @@ public class UsuarioDao {
 
         List<UsuarioDadosDto> resultados = jdbcTemplate.query(sql, new Object[]{numero}, (rs, rowNum) ->
                 new UsuarioDadosDto(
+                        rs.getLong("ID"),
                         rs.getString("NOME"),
                         rs.getString("GENERO"),
                         rs.getString("STATUS"),

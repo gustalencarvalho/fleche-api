@@ -13,5 +13,6 @@ public class BaresDto {
     private String bairro;
     private String cidade;
     private Integer numero;
+    private String qrCode;
 
 }

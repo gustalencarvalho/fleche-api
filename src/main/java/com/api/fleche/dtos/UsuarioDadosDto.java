@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 public class UsuarioDadosDto {
 
+    private Long id;
     private String nome;
     private String genero;
     private String status;

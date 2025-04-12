@@ -37,7 +37,7 @@ public class BarServiceImpl implements BarService {
     public List<BaresDto> findAll() {
         return barRepository.findAll()
                 .stream()
-                .map(bar -> new BaresDto(bar.getId(), bar.getNome(), bar.getEndereco(), bar.getBairro(), bar.getCidade(), bar.getNumero()))
+                .map(bar -> new BaresDto(bar.getId(), bar.getNome(), bar.getEndereco(), bar.getBairro(), bar.getCidade(), bar.getNumero(), bar.getQrCode()))
                 .collect(Collectors.toList());
     }
 
