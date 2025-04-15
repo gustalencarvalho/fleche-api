@@ -1,13 +1,15 @@
 package com.api.fleche.dtos;
 
-import com.api.fleche.enums.Genero;
-import com.api.fleche.enums.Preferencia;
 import com.api.fleche.enums.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -27,6 +29,12 @@ public class UsuarioDto {
 
     @NotNull(message = "A data de nascimento é obrigatória")
     private LocalDate dataNascimento;
+
+    @Column(nullable = false, length = 150)
+    private String senha;
+
+    @Lob
+    private byte[] foto;
 
     private Status status;
 

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/likes")
@@ -22,16 +24,16 @@ public class LikeController {
 
     @PostMapping("/{origemId}/{destinoId}/{status}")
     public ResponseEntity<String> darLike(@PathVariable Long origemId, @PathVariable Long destinoId, @PathVariable StatusLike status) {
-        Usuario usuarioOrigem = usuarioService.findById(origemId);
-        Usuario usuarioDestino = usuarioService.findById(destinoId);
+        Optional<Usuario> usuarioOrigem = usuarioService.findById(origemId);
+        Optional<Usuario> usuarioDestino = usuarioService.findById(destinoId);
 
         if (usuarioOrigem == null || usuarioDestino == null) {
             return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
 
-        Like like = likeService.darLike(usuarioOrigem, usuarioDestino, status);
+        Like like = likeService.darLike(usuarioOrigem.get(), usuarioDestino.get(), status);
 
-        if (status == StatusLike.LIKE && likeService.verificarMatch(usuarioOrigem, usuarioDestino)) {
+        if (status == StatusLike.LIKE && likeService.verificarMatch(usuarioOrigem.get(), usuarioDestino.get())) {
             return ResponseEntity.ok("MATCH encontrado! 🎉");
         }
 

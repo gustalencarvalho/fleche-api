@@ -47,7 +47,7 @@ public class UsuarioBarSessaoController {
         }
         var usuarioBarSessaoModel = new UsuarioBarSessao();
         usuarioBarSessaoModel.setBar(bar);
-        usuarioBarSessaoModel.setUsuario(usuario);
+        usuarioBarSessaoModel.setUsuario(usuario.get());
         usuarioBarSessaoModel.setDataAtivacao(LocalDateTime.now(ZoneId.of("UTC")));
         usuarioBarSessaoModel.setDataExpiracao(LocalDateTime.now().plusHours(4));
         usuarioBarSessaoModel.setStatusUsuarioBar(StatusUsuarioBar.ONLINE);
@@ -55,7 +55,7 @@ public class UsuarioBarSessaoController {
         if (status == null) {
             usuarioBarSessaoService.salvar(usuarioBarSessaoModel);
         } else {
-            usuarioBarSessaoService.realizarCheckin(usuario.getId(), bar.getId());
+            usuarioBarSessaoService.realizarCheckin(usuario.get().getId(), bar.getId());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("Check-in realizado com sucesso!");

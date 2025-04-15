@@ -30,6 +30,9 @@ public class Usuario implements Serializable {
     @Column(nullable = false, length = 150)
     private String nome;
 
+    @Column(nullable = false, length = 20)
+    private String senha;
+
     @Email
     private String email;
 
@@ -41,6 +44,10 @@ public class Usuario implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Genero genero;
+
+    @Column
+    @Lob
+    private byte[] foto;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
