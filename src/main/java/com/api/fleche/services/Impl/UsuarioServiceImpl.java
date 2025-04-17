@@ -1,12 +1,14 @@
 package com.api.fleche.services.Impl;
 
 import com.api.fleche.dao.UsuarioDao;
+import com.api.fleche.dtos.LoginDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.Usuario;
 import com.api.fleche.repositories.UsuarioRepository;
 import com.api.fleche.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,6 +21,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioDao usuarioDao;
 
+    @Transactional
     @Override
     public Usuario criarConta(Usuario usuario) {
         return usuarioRepository.save(usuario);
@@ -54,6 +57,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDadosDto buscarDadosUsuario(String numero) {
         return usuarioDao.buscarDadosUsuario(numero);
+    }
+
+
+    @Override
+    public LoginDto findSenhaByNumero(String senha) {
+        return usuarioRepository.findSenhaByNumero(senha);
+    }
+
+    @Override
+    public LoginDto login(String emailOuNumero) {
+        return usuarioDao.buscarDadosLogin(emailOuNumero);
     }
 
 }

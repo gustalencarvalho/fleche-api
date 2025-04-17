@@ -1,4 +1,4 @@
-package com.api.fleche.exceptions;
+package com.api.fleche.infra.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

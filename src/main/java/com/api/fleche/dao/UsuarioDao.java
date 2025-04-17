@@ -1,9 +1,11 @@
 package com.api.fleche.dao;
 
+import com.api.fleche.dtos.LoginDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.repositories.ComandosSqlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -33,5 +35,24 @@ public class UsuarioDao {
 
         return resultados.isEmpty() ? null : resultados.get(0);
     }
+
+    public LoginDto buscarDadosLogin(String numero) {
+        String sql = comandosSqlRepository.login().getCmdSql();
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{numero}, (rs, rowNum) ->
+                    new LoginDto(
+                            rs.getLong("ID"),
+                            rs.getString("NOME"),
+                            rs.getString("EMAIL"),
+                            rs.getString("NUMERO"),
+                            rs.getString("SENHA")
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 
 }
