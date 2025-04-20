@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/bares")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 public class BarController {
 
     private final BarService barService;

@@ -22,7 +22,7 @@ import java.time.ZoneId;
 @RestController
 @RequestMapping("/sessao")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 public class UsuarioBarSessaoController {
 
     private final UsuarioBarSessaoService usuarioBarSessaoService;

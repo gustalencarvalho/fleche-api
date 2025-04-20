@@ -4,6 +4,7 @@ import com.api.fleche.dtos.LoginDto;
 import com.api.fleche.models.Usuario;
 import com.api.fleche.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.time.ZoneId;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:8100")
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final UsuarioService usuarioService;
