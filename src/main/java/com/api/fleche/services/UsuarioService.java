@@ -1,6 +1,7 @@
 package com.api.fleche.services;
 
 import com.api.fleche.dtos.LoginDto;
+import com.api.fleche.dtos.UsuarioAtualizarDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.Usuario;
 import org.springframework.data.jpa.repository.Query;
@@ -21,9 +22,11 @@ public interface UsuarioService {
 
     Optional<Usuario> findById(Long usuarioId);
 
-    UsuarioDadosDto buscarDadosUsuario(String numero);
+    UsuarioDadosDto buscarDadosUsuario(Long id);
 
     LoginDto findSenhaByNumero(String senha);
 
     LoginDto login(String emailOuNumero);
+
+    void atualizarDados(UsuarioAtualizarDto atualizarDto, Long id);
 }

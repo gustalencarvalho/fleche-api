@@ -1,10 +1,14 @@
 package com.api.fleche.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaresDto {
 
     private Long id;
@@ -14,5 +18,6 @@ public class BaresDto {
     private String cidade;
     private Integer numero;
     private String qrCode;
+    private Long usuariosOnline;
 
 }

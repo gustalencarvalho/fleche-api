@@ -13,6 +13,8 @@ public class UsuarioDadosDto {
     private Long id;
     private String nome;
     private String genero;
+    private String email;
+    private String numero;
     private String status;
     private String preferencia;
     private String statusUsuarioBar;

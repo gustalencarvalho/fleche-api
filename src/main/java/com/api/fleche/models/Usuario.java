@@ -42,8 +42,7 @@ public class Usuario implements Serializable {
     @NotNull
     private LocalDate dataNascimento;
 
-    @Enumerated(EnumType.STRING)
-    private Genero genero;
+    private String genero;
 
     @Column
     @Lob
@@ -53,8 +52,7 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private Status status = Status.ATIVO;
 
-    @Enumerated(EnumType.STRING)
-    private Preferencia preferencia;
+    private String preferencia;
 
     @Column(nullable = false)
     @CreationTimestamp

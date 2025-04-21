@@ -1,6 +1,7 @@
 package com.api.fleche.services.Impl;
 
-import com.api.fleche.dao.UsuarioBaSessaoDao;
+import com.api.fleche.dao.UsuarioBarSessaoDao;
+import com.api.fleche.dtos.BaresDto;
 import com.api.fleche.dtos.UsuarioBarDto;
 import com.api.fleche.enums.StatusUsuarioBar;
 import com.api.fleche.models.UsuarioBarSessao;
@@ -12,13 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioBarSessaoServiceImpl implements UsuarioBarSessaoService {
 
     private final UsuarioBarSessaoRepository usuarioBarSessaoRepository;
-    private final UsuarioBaSessaoDao usuarioBaSessaoDao;
+    private final UsuarioBarSessaoDao usuarioBarSessaoDao;
 
 
     public boolean findByUsuarioIdAndDataExpiracaoAfter(Long usuarioId) {
@@ -55,8 +57,13 @@ public class UsuarioBarSessaoServiceImpl implements UsuarioBarSessaoService {
     }
 
     @Override
+    public List<BaresDto> listarTotalUsuariosPorBar() {
+        return usuarioBarSessaoDao.listarTotalUsuariosPorBar();
+    }
+
+    @Override
     public Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable) {
-        return usuarioBaSessaoDao.usuariosParaListar(qrCode, usuarioId, pageable);
+        return usuarioBarSessaoDao.usuariosParaListar(qrCode, usuarioId, pageable);
     }
 
 }

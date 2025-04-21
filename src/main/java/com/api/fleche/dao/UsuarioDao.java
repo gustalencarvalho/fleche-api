@@ -18,14 +18,16 @@ public class UsuarioDao {
     private final JdbcTemplate jdbcTemplate;
     private final ComandosSqlRepository comandosSqlRepository;
 
-    public UsuarioDadosDto buscarDadosUsuario(String numero) {
+    public UsuarioDadosDto buscarDadosUsuario(Long id) {
         String sql = comandosSqlRepository.buscarDadosUsuario().getCmdSql();
 
-        List<UsuarioDadosDto> resultados = jdbcTemplate.query(sql, new Object[]{numero}, (rs, rowNum) ->
+        List<UsuarioDadosDto> resultados = jdbcTemplate.query(sql, new Object[]{id}, (rs, rowNum) ->
                 new UsuarioDadosDto(
                         rs.getLong("ID"),
                         rs.getString("NOME"),
                         rs.getString("GENERO"),
+                        rs.getString("EMAIL"),
+                        rs.getString("NUMERO"),
                         rs.getString("STATUS"),
                         rs.getString("PREFERENCIA"),
                         rs.getString("STATUS_USUARIO_BAR"),

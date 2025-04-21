@@ -1,5 +1,6 @@
 package com.api.fleche.controllers;
 
+import com.api.fleche.dtos.BaresDto;
 import com.api.fleche.dtos.UsuarioBarDto;
 import com.api.fleche.dtos.UsuarioBarSessaoDto;
 import com.api.fleche.enums.StatusUsuarioBar;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @RestController
 @RequestMapping("/sessao")
@@ -75,7 +77,7 @@ public class UsuarioBarSessaoController {
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
 
-    @GetMapping("/online/{usuarioId}")
+    @GetMapping("/usuarios/disponiveis/{usuarioId}")
     public ResponseEntity<Page<UsuarioBarDto>> usuariosParaListar(@PathVariable Long usuarioId, @RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
         var usuario = usuarioService.findById(usuarioId);
         if (usuario == null) {
@@ -91,6 +93,11 @@ public class UsuarioBarSessaoController {
         Page<UsuarioBarDto> usuarioBarDtos = usuarioBarSessaoService.usuariosParaListar(qrCode, usuarioId, pageable);
 
         return ResponseEntity.ok(usuarioBarDtos);
+    }
+
+    @GetMapping("/usuarios/online")
+    public ResponseEntity<List<BaresDto>> usuariosOnline() {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioBarSessaoService.listarTotalUsuariosPorBar());
     }
 
 }
