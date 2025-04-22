@@ -1,13 +1,21 @@
 package com.api.fleche.controllers;
 
+import com.api.fleche.dtos.AuthenticationDto;
 import com.api.fleche.dtos.LoginDto;
+import com.api.fleche.dtos.LoginResponseDto;
+import com.api.fleche.dtos.UsuarioDto;
+import com.api.fleche.infra.security.TokenService;
 import com.api.fleche.models.Usuario;
 import com.api.fleche.services.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,50 +31,33 @@ import java.time.ZoneId;
 public class AuthenticationController {
 
     private final UsuarioService usuarioService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    @PostMapping(value = "/singup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> criarConta(
-            @RequestParam("nome") String nome,
-            @RequestParam("email") String email,
-            @RequestParam("numero") String numero,
-            @RequestParam("senha") String senha,
-            @RequestParam("dataNascimento") String dataNascimento,
-            @RequestParam("foto") MultipartFile foto) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
+        var userNamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.telefone(), authenticationDto.senha());
+        var auth = authenticationManager.authenticate(userNamePassword);
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDto(token));
+    }
 
-        if (usuarioService.existsByEmail(email)) {
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Object> cadastrar(@RequestBody @Valid UsuarioDto usuarioDto) {
+        if (usuarioService.existsByEmail(usuarioDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Email já cadastrado!");
         }
-        if (usuarioService.existsByNumero(numero)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Telefone já cadastrado!");
-        }
-        LocalDate nascimento = LocalDate.parse(dataNascimento);
+        LocalDate nascimento = LocalDate.parse(usuarioDto.getDataNascimento().toString());
         if (!usuarioService.verificaIdade(nascimento)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Precisa ter 18 anos ou mais");
         }
-
-        Usuario usuarioModel = new Usuario();
-        usuarioModel.setNome(nome);
-        usuarioModel.setEmail(email);
-        usuarioModel.setNumero(numero);
-        usuarioModel.setSenha(senha);
-        usuarioModel.setDataNascimento(nascimento);
-        try {
-            usuarioModel.setFoto(foto.getBytes());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar imagem");
+        if (usuarioService.findByTelefone(usuarioDto.getTelefone()) != null) {
+            return ResponseEntity.badRequest().build();
         }
-        usuarioModel.setDataDeCriacao(LocalDateTime.now(ZoneId.of("UTC")));
-        usuarioService.criarConta(usuarioModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioModel);
-    }
-
-    @PostMapping("/login/{numero}/{senha}")
-    public ResponseEntity<?> login(@PathVariable String numero, @PathVariable String senha) {
-        LoginDto user = usuarioService.login(numero);
-        if (numero.equals(user.getNumero()) && senha.equals(usuarioService.findSenhaByNumero(numero).getSenha())) {
-            return ResponseEntity.status(HttpStatus.OK).body(user.getId());
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Falha ao realizar login");
+        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioDto.getSenha());
+        Usuario novoUsuario = new Usuario(usuarioDto.getNome(), usuarioDto.getEmail(), usuarioDto.getDdd(), usuarioDto.getTelefone(), usuarioDto.getDataNascimento(), encryptedPassword, usuarioDto.getRole());
+        usuarioService.criarConta(novoUsuario);
+        return ResponseEntity.ok().build();
     }
 
 }

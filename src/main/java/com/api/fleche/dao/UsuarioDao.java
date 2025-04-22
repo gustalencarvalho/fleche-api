@@ -28,6 +28,7 @@ public class UsuarioDao {
                         rs.getString("GENERO"),
                         rs.getString("EMAIL"),
                         rs.getString("NUMERO"),
+                        rs.getBytes("FOTO"),
                         rs.getString("STATUS"),
                         rs.getString("PREFERENCIA"),
                         rs.getString("STATUS_USUARIO_BAR"),

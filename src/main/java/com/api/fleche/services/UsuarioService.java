@@ -1,10 +1,9 @@
 package com.api.fleche.services;
 
 import com.api.fleche.dtos.LoginDto;
-import com.api.fleche.dtos.UsuarioAtualizarDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.Usuario;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ public interface UsuarioService {
 
     boolean existsByEmail(String email);
 
-    boolean existsByNumero(String numero);
+    boolean existsByTelefone(String numero);
 
     boolean verificaIdade(LocalDate dataNascimento);
 
@@ -24,9 +23,9 @@ public interface UsuarioService {
 
     UsuarioDadosDto buscarDadosUsuario(Long id);
 
-    LoginDto findSenhaByNumero(String senha);
-
     LoginDto login(String emailOuNumero);
 
-    void atualizarDados(UsuarioAtualizarDto atualizarDto, Long id);
+    void atualizarDados(UsuarioDadosDto atualizarDto, Long id);
+
+    UserDetails findByTelefone(String telefone);
 }

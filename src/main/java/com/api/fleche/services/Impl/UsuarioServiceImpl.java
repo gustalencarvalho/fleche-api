@@ -2,14 +2,13 @@ package com.api.fleche.services.Impl;
 
 import com.api.fleche.dao.UsuarioDao;
 import com.api.fleche.dtos.LoginDto;
-import com.api.fleche.dtos.UsuarioAtualizarDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.Usuario;
 import com.api.fleche.repositories.UsuarioRepository;
 import com.api.fleche.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +35,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public boolean existsByNumero(String numero) {
-        return usuarioRepository.existsByNumero(numero);
+    public boolean existsByTelefone(String numero) {
+        return usuarioRepository.existsByTelefone(numero);
     }
 
     @Override
@@ -63,10 +62,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
 
-    @Override
-    public LoginDto findSenhaByNumero(String senha) {
-        return usuarioRepository.findSenhaByNumero(senha);
-    }
+//    @Override
+//    public LoginDto findSenhaByNumero(String senha) {
+//        return usuarioRepository.findSenhaByTelefone(senha);
+//    }
 
     @Override
     public LoginDto login(String emailOuNumero) {
@@ -76,17 +75,22 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     @Modifying
     @Override
-    public void atualizarDados(UsuarioAtualizarDto atualizarDto, Long id) {
+    public void atualizarDados(UsuarioDadosDto atualizarDto, Long id) {
         Optional<Usuario> usuario = findById(id);
         usuario.get().setNome(atualizarDto.getNome() != null ? atualizarDto.getNome() :  usuario.get().getNome());
-        usuario.get().setNumero(atualizarDto.getNumero() != null ? atualizarDto.getNumero() : usuario.get().getNumero());
+        usuario.get().setTelefone(atualizarDto.getNumero() != null ? atualizarDto.getNumero() : usuario.get().getTelefone());
         usuario.get().setEmail(atualizarDto.getEmail() != null ? atualizarDto.getEmail() : usuario.get().getEmail());
-        usuario.get().setGenero(atualizarDto.getGenero() != null ? atualizarDto.getGenero() : usuario.get().getGenero());
-        usuario.get().setPreferencia(atualizarDto.getPreferencia() != null ? atualizarDto.getPreferencia() : usuario.get().getPreferencia());
+        //usuario.get().setGenero(atualizarDto.getGenero() != null ? atualizarDto.getGenero() : usuario.get().getGenero());
+        //usuario.get().setPreferencia(atualizarDto.getPreferencia() != null ? atualizarDto.getPreferencia() : usuario.get().getPreferencia());
         usuario.get().setDataNascimento(usuario.get().getDataNascimento());
         usuario.get().setSenha(usuario.get().getSenha());
-        usuario.get().setFoto(atualizarDto.getFoto() != null ? atualizarDto.getFoto() : usuario.get().getFoto());
+        //usuario.get().setFoto(atualizarDto.getFoto().length > 5 ? atualizarDto.getFoto() : usuario.get().getFoto());
         usuarioRepository.save(usuario.get());
+    }
+
+    @Override
+    public UserDetails findByTelefone(String telefone) {
+        return usuarioRepository.findByTelefone(telefone);
     }
 
 }
