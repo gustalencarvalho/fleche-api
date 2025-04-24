@@ -24,6 +24,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("fleche-api")
                     .withSubject(usuario.getTelefone())
+                    .withClaim("ROLE", usuario.getRole().name())
                     .withClaim("id", usuario.getId())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);

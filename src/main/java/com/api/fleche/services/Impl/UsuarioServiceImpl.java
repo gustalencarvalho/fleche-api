@@ -78,13 +78,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void atualizarDados(UsuarioDadosDto atualizarDto, Long id) {
         Optional<Usuario> usuario = findById(id);
         usuario.get().setNome(atualizarDto.getNome() != null ? atualizarDto.getNome() :  usuario.get().getNome());
-        usuario.get().setTelefone(atualizarDto.getNumero() != null ? atualizarDto.getNumero() : usuario.get().getTelefone());
+        usuario.get().setTelefone(atualizarDto.getTelefone() != null ? atualizarDto.getTelefone() : usuario.get().getTelefone());
         usuario.get().setEmail(atualizarDto.getEmail() != null ? atualizarDto.getEmail() : usuario.get().getEmail());
-        //usuario.get().setGenero(atualizarDto.getGenero() != null ? atualizarDto.getGenero() : usuario.get().getGenero());
-        //usuario.get().setPreferencia(atualizarDto.getPreferencia() != null ? atualizarDto.getPreferencia() : usuario.get().getPreferencia());
         usuario.get().setDataNascimento(usuario.get().getDataNascimento());
         usuario.get().setSenha(usuario.get().getSenha());
-        //usuario.get().setFoto(atualizarDto.getFoto().length > 5 ? atualizarDto.getFoto() : usuario.get().getFoto());
         usuarioRepository.save(usuario.get());
     }
 

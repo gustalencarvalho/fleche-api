@@ -1,10 +1,11 @@
 package com.api.fleche.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TB_PERFIL_USUARIO")
-public class Perfil {
+public class PerfilUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +17,19 @@ public class Perfil {
 
     @Column
     private String genero;
+
+    @Column
+    private String preferenciaGenero;
+
+    @Column
+    @Size(max = 150)
+    private String bio;
+
+    @Column
+    private String filme;
+
+    @Column
+    private String lazer;
 
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)

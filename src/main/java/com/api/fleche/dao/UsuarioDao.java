@@ -25,12 +25,9 @@ public class UsuarioDao {
                 new UsuarioDadosDto(
                         rs.getLong("ID"),
                         rs.getString("NOME"),
-                        rs.getString("GENERO"),
                         rs.getString("EMAIL"),
-                        rs.getString("NUMERO"),
-                        rs.getBytes("FOTO"),
+                        rs.getString("TELEFONE"),
                         rs.getString("STATUS"),
-                        rs.getString("PREFERENCIA"),
                         rs.getString("STATUS_USUARIO_BAR"),
                         rs.getString("NOME_BAR")
                 )

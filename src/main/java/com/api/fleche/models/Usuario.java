@@ -1,7 +1,5 @@
 package com.api.fleche.models;
 
-import com.api.fleche.enums.Genero;
-import com.api.fleche.enums.Preferencia;
 import com.api.fleche.enums.Status;
 import com.api.fleche.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -66,10 +64,10 @@ public class Usuario implements Serializable, UserDetails {
     private LocalDateTime dataDeCriacao;
 
     @OneToOne(mappedBy = "usuarioId")
-    private Perfil perfil;
+    private PerfilUsuario perfilUsuario;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role = UserRole.USER;
 
 
     public Usuario(String nome, String email, String ddd, String telefone, LocalDate dataNascimento, String senha, UserRole role) {

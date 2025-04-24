@@ -2,7 +2,6 @@ package com.api.fleche.dtos;
 
 import com.api.fleche.enums.Status;
 import com.api.fleche.enums.UserRole;
-import com.api.fleche.models.Perfil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
@@ -25,7 +24,7 @@ public class UsuarioDto {
     @Email(message = "E-mail inválido")
     private String email;
 
-    @Size(min = 10, max = 20, message = "O número deve ter entre 10 e 20 caracteres")
+    @Size(min = 8, message = "O número deve ter entre 8")
     private String telefone;
 
     @NotNull
@@ -44,6 +43,7 @@ public class UsuarioDto {
 
     public UsuarioDto() {
         this.status = Status.ATIVO;
+        this.role = UserRole.USER;
     }
 
 }
