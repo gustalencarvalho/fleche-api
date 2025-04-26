@@ -26,7 +26,6 @@ public class UsuarioBarSessaoDao {
                 new UsuarioBarDto(
                         rs.getLong("ID"),
                         rs.getString("NOME"),
-                        rs.getString("GENERO"),
                         rs.getInt("IDADE")
                 )
         );

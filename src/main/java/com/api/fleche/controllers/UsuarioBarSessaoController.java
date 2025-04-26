@@ -83,7 +83,7 @@ public class UsuarioBarSessaoController {
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        var bar = usuarioBarSessaoService.findByBarId(usuarioId);
+        var bar = usuarioBarSessaoService.findByBarId(usuario.get().getId());
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
