@@ -3,21 +3,22 @@ spring:
     name: fleche-api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/fleche
-    username: postgres
-    password: 15421542
+    url: jdbc:mysql://mysql:3306/fleche?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: fleche
+    password: 1542
+    hikari:
+      max-lifetime: 1800000  # 30 minutos
+      validation-timeout: 3000  # 3 segundos
+      idle-timeout: 600000  # 10 minutos
 
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         jdbc.lob.non_contextual_creation: true
-        show_sql: true
-
-server:
-  port: 8080
+    show-sql: true
 
 auth:
   key:

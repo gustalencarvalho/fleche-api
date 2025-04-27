@@ -34,6 +34,11 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
+    @GetMapping("/api")
+    public ResponseEntity<String> api() {
+        return ResponseEntity.status(HttpStatus.OK).body("E ai calabreso");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.telefone(), authenticationDto.senha());

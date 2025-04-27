@@ -1,0 +1,47 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fleche
+      MYSQL_USER: fleche
+      MYSQL_PASSWORD: 1542
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - fleche-network
+
+  fleche-api:
+    build: .
+    image: fleche-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fleche?createDatabaseIfNotExist=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: fleche
+      SPRING_DATASOURCE_PASSWORD: 1542
+    networks:
+      - fleche-network
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    ports:
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - fleche-network
+    restart: always
+
+networks:
+  fleche-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
