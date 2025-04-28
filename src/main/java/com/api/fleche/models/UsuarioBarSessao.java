@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "usuario_bar_sessao", uniqueConstraints = {
+@Table(name = "USUARIO_BAR_SESSAO", uniqueConstraints = {
         @UniqueConstraint(columnNames = "usuario_id")
 })
 public class UsuarioBarSessao implements Serializable {

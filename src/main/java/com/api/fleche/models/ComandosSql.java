@@ -25,3 +25,4 @@ public class ComandosSql implements Serializable {
     private String cmdStatus;
 
 }
+

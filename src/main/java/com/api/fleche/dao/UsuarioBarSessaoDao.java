@@ -42,7 +42,7 @@ public class UsuarioBarSessaoDao {
         return new PageImpl<>(usuariosPaginados, pageable, resultados.size());
     }
 
-    public List<BaresDto> listarTotalUsuariosPorBar() {
+    public List<BaresDto> listarTotalUsuariosPorBar(Long usuarioId) {
         String sql = comandosSqlRepository.usuariosOnline().getCmdSql();
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -56,7 +56,7 @@ public class UsuarioBarSessaoDao {
             dto.setQrCode(rs.getString("QR_CODE"));
             dto.setUsuariosOnline(rs.getLong("TOTAL_USUARIOS"));
             return dto;
-        });
+        }, usuarioId);
     }
 
 

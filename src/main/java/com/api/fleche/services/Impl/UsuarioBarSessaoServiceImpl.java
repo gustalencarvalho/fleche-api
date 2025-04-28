@@ -57,8 +57,8 @@ public class UsuarioBarSessaoServiceImpl implements UsuarioBarSessaoService {
     }
 
     @Override
-    public List<BaresDto> listarTotalUsuariosPorBar() {
-        return usuarioBarSessaoDao.listarTotalUsuariosPorBar();
+    public List<BaresDto> listarTotalUsuariosPorBar(Long usuarioId) {
+        return usuarioBarSessaoDao.listarTotalUsuariosPorBar(usuarioId);
     }
 
     @Override

@@ -17,5 +17,5 @@ public interface UsuarioBarSessaoService {
     void salvar(UsuarioBarSessao usuarioBarSessao);
     Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable);
     String qrCodeBar(Long barId);
-    List<BaresDto> listarTotalUsuariosPorBar();
+    List<BaresDto> listarTotalUsuariosPorBar(Long usuarioId);
 }

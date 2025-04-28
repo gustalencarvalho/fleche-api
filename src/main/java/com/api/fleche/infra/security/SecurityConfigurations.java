@@ -32,7 +32,10 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PATCH, "/usuario/**").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/sessao/**").hasRole("USER")
                         .requestMatchers(HttpMethod.PATCH, "/sessao/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/bares/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/bares/**").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

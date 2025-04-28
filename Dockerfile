@@ -1,19 +1,14 @@
-# Etapa base: imagem com Java
+# Imagem base (com OpenJDK)
 FROM openjdk:17-jdk-slim
 
-# Diretório dentro do container para a aplicação
+# Diretório de trabalho
 WORKDIR /app
 
-# Baixa o script wait-for-it.sh
-RUN apt-get update && apt-get install -y curl && \
-    curl -o /app/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
-    chmod +x /app/wait-for-it.sh
-
-# Copia o arquivo .war gerado para o container
+# Copia o arquivo .jar para dentro do container
 COPY target/fleche-api.war /app/fleche-api.war
 
-# Expõe a porta padrão do Spring Boot (altere se necessário)
+# Expõe a porta do aplicativo
 EXPOSE 8080
 
-# Comando para iniciar o Spring Boot com o .war após aguardar o MySQL
-CMD ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "/app/fleche-api.war"]
+# Comando para iniciar a aplicação
+CMD ["java", "-jar", "/app/fleche-api.war"]

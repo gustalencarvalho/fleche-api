@@ -27,17 +27,11 @@ import java.time.ZoneId;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final UsuarioService usuarioService;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
-
-    @GetMapping("/api")
-    public ResponseEntity<String> api() {
-        return ResponseEntity.status(HttpStatus.OK).body("E ai calabreso");
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto authenticationDto) {

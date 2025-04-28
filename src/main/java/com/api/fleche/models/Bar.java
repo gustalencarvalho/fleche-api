@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "tb_bares")
+@Table(name = "TB_BARES")
 public class Bar implements Serializable {
     private static final long serialVersionUID = 1L;
 

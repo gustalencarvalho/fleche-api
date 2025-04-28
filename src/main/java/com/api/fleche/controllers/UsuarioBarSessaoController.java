@@ -24,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/sessao")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class UsuarioBarSessaoController {
 
     private final UsuarioBarSessaoService usuarioBarSessaoService;
@@ -95,9 +94,9 @@ public class UsuarioBarSessaoController {
         return ResponseEntity.ok(usuarioBarDtos);
     }
 
-    @GetMapping("/usuarios/online")
-    public ResponseEntity<List<BaresDto>> usuariosOnline() {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioBarSessaoService.listarTotalUsuariosPorBar());
+    @GetMapping("/usuarios/{usuarioId}/online")
+    public ResponseEntity<List<BaresDto>> usuariosOnline(@PathVariable Long usuarioId) {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioBarSessaoService.listarTotalUsuariosPorBar(usuarioId));
     }
 
 }
