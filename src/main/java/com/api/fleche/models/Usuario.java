@@ -3,6 +3,7 @@ package com.api.fleche.models;
 import com.api.fleche.enums.Status;
 import com.api.fleche.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -63,7 +64,8 @@ public class Usuario implements Serializable, UserDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime dataDeCriacao;
 
-    @OneToOne(mappedBy = "usuarioId")
+    @OneToOne(mappedBy = "usuarioId", fetch = FetchType.LAZY, optional = true)
+    @JsonIgnore
     private PerfilUsuario perfilUsuario;
 
     @Enumerated(EnumType.STRING)
@@ -79,6 +81,19 @@ public class Usuario implements Serializable, UserDetails {
         this.senha = senha;
         this.role = role;
     }
+
+    public Usuario(Long id, String nome, String email, String ddd, String telefone,
+                   LocalDate dataNascimento, String senha, UserRole role) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.ddd = ddd;
+        this.telefone = telefone;
+        this.dataNascimento = dataNascimento;
+        this.senha = senha;
+        this.role = role;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

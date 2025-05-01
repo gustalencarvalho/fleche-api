@@ -17,4 +17,7 @@ public interface ComandosSqlRepository extends JpaRepository<ComandosSql, Long> 
 
     @Query(value = "SELECT CMD_SQL, CMD_ID, CMD_DESCRICAO, CMD_STATUS FROM TB_CMD WHERE CMD_ID = 4 AND CMD_STATUS = 'A'", nativeQuery = true)
     ComandosSql usuariosOnline();
+
+    @Query(value = "SELECT CMD_SQL, CMD_ID, CMD_DESCRICAO, CMD_STATUS FROM TB_CMD WHERE CMD_ID = 5 AND CMD_STATUS = 'A'", nativeQuery = true)
+    ComandosSql PerfilDoUsuario();
 }

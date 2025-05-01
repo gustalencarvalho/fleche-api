@@ -46,17 +46,13 @@ public class PerfilUsuarioController {
         try {
             var usuario = usuarioService.findById(perfilUsuarioDto.getId());
             var perfilUsuario = new PerfilUsuario();
-
             perfilUsuario.setGenero(perfilUsuarioDto.getGenero().name());
             perfilUsuario.setBio(perfilUsuarioDto.getBio());
             perfilUsuario.setPreferencia(perfilUsuarioDto.getPreferencia().name());
-
             if (foto != null && !foto.isEmpty()) {
                 perfilUsuario.setFoto(foto.getBytes());
             }
-
             perfilUsuario.setUsuarioId(usuario.get());
-
             perfilUsuarioService.salvarPerfil(perfilUsuario);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (IOException e) {

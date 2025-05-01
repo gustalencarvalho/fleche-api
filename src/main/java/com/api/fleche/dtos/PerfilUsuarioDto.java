@@ -24,6 +24,9 @@ public class PerfilUsuarioDto {
     @Column(nullable = false, length = 150)
     private String bio;
 
+    @Lob
+    private byte[] foto;
+
     private String filme;
 
     private String lazer;
@@ -31,5 +34,6 @@ public class PerfilUsuarioDto {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Preferencia preferencia;
+
 
 }

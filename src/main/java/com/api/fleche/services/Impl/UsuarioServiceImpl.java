@@ -2,6 +2,7 @@ package com.api.fleche.services.Impl;
 
 import com.api.fleche.dao.UsuarioDao;
 import com.api.fleche.dtos.LoginDto;
+import com.api.fleche.dtos.PerfilUsuarioDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
 import com.api.fleche.models.PerfilUsuario;
 import com.api.fleche.models.Usuario;
@@ -47,7 +48,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         LocalDate hoje = LocalDate.now();
         Period idade = Period.between(dataNascimento, hoje);
-
         return idade.getYears() >= 18;
     }
 
@@ -61,12 +61,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDadosDto buscarDadosUsuario(Long id) {
         return usuarioDao.buscarDadosUsuario(id);
     }
-
-
-//    @Override
-//    public LoginDto findSenhaByNumero(String senha) {
-//        return usuarioRepository.findSenhaByTelefone(senha);
-//    }
 
     @Override
     public LoginDto login(String emailOuNumero) {
@@ -84,6 +78,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.get().setDataNascimento(usuario.get().getDataNascimento());
         usuario.get().setSenha(usuario.get().getSenha());
         usuarioRepository.save(usuario.get());
+    }
+
+    @Override
+    public Usuario findUsuarioSemPerfil(String telefone) {
+        return usuarioRepository.findUsuarioSemPerfil(telefone).get();
+    }
+
+    @Override
+    public PerfilUsuarioDto perfilUsuario(Long usuarioId) {
+        return usuarioDao.perfilUsuario(usuarioId);
     }
 
     @Override

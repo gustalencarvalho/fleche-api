@@ -19,9 +19,7 @@ public class CorsConfig {
                 "http://localhost:8100",
                 "http://localhost:8101",
                 "http://localhost",
-                "http://host.docker.internal:8100",
-                "http://172.21.0.6:8100",  // Frontend dentro do container
-                "http://10.0.2.26:8100"    // Outra URL possível de acesso
+                "http://host.docker.internal:8100"
         ));
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -29,6 +27,5 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
 
 }

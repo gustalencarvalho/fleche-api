@@ -1,7 +1,10 @@
 package com.api.fleche.dao;
 
 import com.api.fleche.dtos.LoginDto;
+import com.api.fleche.dtos.PerfilUsuarioDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
+import com.api.fleche.enums.Genero;
+import com.api.fleche.enums.Preferencia;
 import com.api.fleche.repositories.ComandosSqlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,27 @@ public class UsuarioDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final ComandosSqlRepository comandosSqlRepository;
+
+    public PerfilUsuarioDto perfilUsuario(Long usuarioId) {
+        String sql = comandosSqlRepository.PerfilDoUsuario().getCmdSql();
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, (rs, rowNum) ->
+                    new PerfilUsuarioDto(
+                            rs.getLong("USUARIO_ID"),
+                            Genero.valueOf(rs.getString("GENERO")),
+                            rs.getString("BIO"),
+                            rs.getBytes("FOTO"),
+                            rs.getString("FILME"),
+                            rs.getString("LAZER"),
+                            Preferencia.valueOf(rs.getString("PREFERENCIA"))
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 
     public UsuarioDadosDto buscarDadosUsuario(Long id) {
         String sql = comandosSqlRepository.buscarDadosUsuario().getCmdSql();
