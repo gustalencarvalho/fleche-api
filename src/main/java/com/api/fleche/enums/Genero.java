@@ -1,12 +1,10 @@
 package com.api.fleche.enums;
 
 public enum Genero {
-    CISGÊNERO("CISGÊNERO"),
-    TRANSGÊNERO("TRANSGÊNERO"),
+    HETEROSSEXUAL("HETEROSSEXUAL"),
+    TRANSSEXUAL("TRANSSEXUAL"),
     HOMOSSEXUAL("HOMOSSEXUAL"),
-    NÃO_BINÁRIO("NÃO BINÁRIO"),
-    NEUTRO("NETRUO"),
-    OUTRO("OUTRO");
+    BISSEXUAL("BISSEXUAL");
 
     private String genero;
 

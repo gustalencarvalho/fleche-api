@@ -3,6 +3,7 @@ package com.api.fleche.services.Impl;
 import com.api.fleche.dao.UsuarioDao;
 import com.api.fleche.dtos.LoginDto;
 import com.api.fleche.dtos.UsuarioDadosDto;
+import com.api.fleche.models.PerfilUsuario;
 import com.api.fleche.models.Usuario;
 import com.api.fleche.repositories.UsuarioRepository;
 import com.api.fleche.services.UsuarioService;

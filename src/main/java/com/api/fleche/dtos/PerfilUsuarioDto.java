@@ -17,10 +17,6 @@ public class PerfilUsuarioDto {
 
     private Long id;
 
-    @Column
-    @Lob
-    private byte[] foto;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Genero genero;
@@ -28,13 +24,12 @@ public class PerfilUsuarioDto {
     @Column(nullable = false, length = 150)
     private String bio;
 
-    @Column(nullable = false)
     private String filme;
 
-    @Column(nullable = false)
     private String lazer;
 
     @Column(nullable = false)
-    private Preferencia preferenciaGenero;
+    @Enumerated(EnumType.STRING)
+    private Preferencia preferencia;
 
 }

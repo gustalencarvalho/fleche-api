@@ -58,7 +58,6 @@ public class UsuarioBarSessaoController {
         } else {
             usuarioBarSessaoService.realizarCheckin(usuario.get().getId(), bar.getId());
         }
-
         return ResponseEntity.status(HttpStatus.OK).body("Check-in realizado com sucesso!");
     }
 
@@ -87,10 +86,8 @@ public class UsuarioBarSessaoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         String qrCode = usuarioBarSessaoService.qrCodeBar(bar);
-
         Pageable pageable = PageRequest.of(page, size);
         Page<UsuarioBarDto> usuarioBarDtos = usuarioBarSessaoService.usuariosParaListar(qrCode, usuarioId, pageable);
-
         return ResponseEntity.ok(usuarioBarDtos);
     }
 
