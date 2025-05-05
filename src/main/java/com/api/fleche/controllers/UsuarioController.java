@@ -34,6 +34,19 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
+    @GetMapping("/{id}/foto")
+    public ResponseEntity<byte[]> getFoto(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if (usuario.isPresent() && usuario.get().getPerfilUsuario().getFoto() != null) {
+            byte[] imagem = usuario.get().getPerfilUsuario().getFoto();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(imagem, headers, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PatchMapping("/{id}/atualizar")
     public ResponseEntity<?> atualizarDados(@RequestParam(value = "nome", required = false) String nome,
                                             @RequestParam(value = "email", required = false) String email,
