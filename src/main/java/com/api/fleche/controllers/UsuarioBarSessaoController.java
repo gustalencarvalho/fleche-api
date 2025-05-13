@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -58,7 +59,7 @@ public class UsuarioBarSessaoController {
         } else {
             usuarioBarSessaoService.realizarCheckin(usuario.get().getId(), bar.getId());
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Check-in realizado com sucesso!");
+        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", "Check-in realizado!"));
     }
 
     @PatchMapping("/checkout/{usuarioId}")
@@ -94,6 +95,11 @@ public class UsuarioBarSessaoController {
     @GetMapping("/usuarios/{usuarioId}/online")
     public ResponseEntity<List<BaresDto>> usuariosOnline(@PathVariable Long usuarioId) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioBarSessaoService.listarTotalUsuariosPorBar(usuarioId));
+    }
+
+    @GetMapping("/usuario/{usuarioId}/autenticado")
+    public ResponseEntity<Object> verificaSeUsuarioEstaOnline(@PathVariable Long usuarioId) {
+        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", usuarioBarSessaoService.verificaSeUsuarioEstaOnline(usuarioId)));
     }
 
 }

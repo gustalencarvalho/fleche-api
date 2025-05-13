@@ -66,4 +66,8 @@ public class UsuarioBarSessaoServiceImpl implements UsuarioBarSessaoService {
         return usuarioBarSessaoDao.usuariosParaListar(qrCode, usuarioId, pageable);
     }
 
+    @Override
+    public String verificaSeUsuarioEstaOnline(Long usuarioId) {
+        return usuarioBarSessaoRepository.verificaSeUsuarioEstaOnline(usuarioId);
+    }
 }

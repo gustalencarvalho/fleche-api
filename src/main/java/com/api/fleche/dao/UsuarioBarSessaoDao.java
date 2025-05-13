@@ -22,7 +22,7 @@ public class UsuarioBarSessaoDao {
     public Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable) {
         String sql = comandosSqlRepository.listaUsuarios().getCmdSql();
 
-        List<UsuarioBarDto> resultados = jdbcTemplate.query(sql, new Object[]{qrCode, usuarioId}, (rs, rowNum) ->
+        List<UsuarioBarDto> resultados = jdbcTemplate.query(sql, new Object[]{qrCode, usuarioId, usuarioId}, (rs, rowNum) ->
                 new UsuarioBarDto(
                         rs.getLong("ID"),
                         rs.getString("NOME"),

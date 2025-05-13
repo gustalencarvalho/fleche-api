@@ -27,4 +27,7 @@ public interface UsuarioBarSessaoRepository extends JpaRepository<UsuarioBarSess
     @Query(value = "SELECT QR_CODE FROM TB_BARES WHERE ID = ?", nativeQuery = true)
     String qrCodeBar(Long barId);
 
+    @Query(value = "SELECT STATUS_USUARIO_BAR FROM USUARIO_BAR_SESSAO WHERE USUARIO_ID = ? AND STATUS_USUARIO_BAR = 'ONLINE'", nativeQuery = true)
+    String verificaSeUsuarioEstaOnline(Long usuarioId);
+
 }

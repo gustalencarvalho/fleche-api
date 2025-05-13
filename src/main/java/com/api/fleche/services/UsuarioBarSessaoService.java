@@ -18,4 +18,5 @@ public interface UsuarioBarSessaoService {
     Page<UsuarioBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable);
     String qrCodeBar(Long barId);
     List<BaresDto> listarTotalUsuariosPorBar(Long usuarioId);
+    String verificaSeUsuarioEstaOnline(Long usuarioId);
 }
