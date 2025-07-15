@@ -1,8 +1,6 @@
 spring:
   application:
     name: fleche-api
-  profiles:
-    active: local
 
   datasource:
     url: jdbc:postgresql://localhost:5432/fleche
