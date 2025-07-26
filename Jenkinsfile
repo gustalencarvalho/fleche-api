@@ -22,10 +22,10 @@ pipeline {
             }
         }
 
-        stage('Docker Check') {
-            steps {
-                sh '/usr/bin/docker version'
-                sh '/usr/bin/docker ps'
+        stage('Diagnóstico PATH') {
+             steps {
+                 sh 'echo $PATH'
+                 sh 'ls -l $(which docker) || echo "docker não encontrado"'
             }
         }
 
