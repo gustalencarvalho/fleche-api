@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven' // Nome exato configurado em "Global Tool Configuration"
+        maven 'Maven'
     }
 
     environment {
@@ -28,5 +28,12 @@ pipeline {
                 sh 'docker run --rm $IMAGE_NAME'
             }
         }
+
+        stage('Check Docker') {
+            steps {
+                sh 'which docker && docker --version'
+            }
+        }
+
     }
 }
