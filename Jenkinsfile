@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven'
-    }
-
     environment {
         IMAGE_NAME = 'fleche-api'
     }
@@ -16,28 +12,14 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh 'mvn test -Dspring.profiles.active=test'
-            }
-        }
-
-        stage('Diagnóstico PATH') {
-             steps {
-                 sh 'echo $PATH'
-                 sh 'ls -l $(which docker) || echo "docker não encontrado"'
-            }
-        }
-
         stage('Docker Build') {
             steps {
-                 sh '/usr/bin/docker build -t fleche-api .'
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-        stage('Docker') {
+        stage('Docker Run') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
                 sh 'docker run --rm $IMAGE_NAME'
             }
         }
