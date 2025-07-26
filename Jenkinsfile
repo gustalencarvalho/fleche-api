@@ -24,8 +24,8 @@ pipeline {
 
         stage('Docker Check') {
             steps {
-                sh 'docker version'
-                sh 'docker ps'
+                sh '/usr/bin/docker version'
+                sh '/usr/bin/docker ps'
             }
         }
 
