@@ -31,7 +31,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                 sh 'docker build -t fleche-api .'
+                 sh '/usr/bin/docker build -t fleche-api .'
             }
         }
 
