@@ -22,18 +22,24 @@ pipeline {
             }
         }
 
+        stage('Docker Check') {
+            steps {
+                sh 'docker version'
+                sh 'docker ps'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                 sh 'docker build -t fleche-api .'
+            }
+        }
+
         stage('Docker') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
                 sh 'docker run --rm $IMAGE_NAME'
             }
         }
-
-        stage('Check Docker') {
-            steps {
-                sh 'which docker && docker --version'
-            }
-        }
-
     }
 }
