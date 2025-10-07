@@ -90,7 +90,6 @@ public class UserService {
         user.get().setPhone(updateDto.getPhone() != null ? updateDto.getPhone() : user.get().getPhone());
         user.get().setEmail(updateDto.getEmail() != null ? updateDto.getEmail() : user.get().getEmail());
         user.get().setDateOfBirth(user.get().getDateOfBirth());
-        user.get().setPassword(user.get().getPassword());
         userRepository.save(user.get());
     }
 

@@ -2,10 +2,17 @@ package com.api.fleche.controller;
 
 import com.api.fleche.model.dtos.AuthenticationDto;
 import com.api.fleche.model.dtos.LoginResponseDto;
+import com.api.fleche.model.dtos.StandardError;
 import com.api.fleche.model.dtos.UserDto;
 import com.api.fleche.infra.security.TokenService;
 import com.api.fleche.model.User;
 import com.api.fleche.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "AuthenticationController", description = "Controller responsible for authentication user")
 @RequestMapping("/auth")
 public class AuthenticationController {
 
@@ -31,6 +41,18 @@ public class AuthenticationController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
+    @Operation(summary = "Authentication user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User autenticated"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)))
+    })
     public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
         try {
             var userNamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.phone(), authenticationDto.password());

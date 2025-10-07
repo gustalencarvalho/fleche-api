@@ -17,7 +17,7 @@ public class BarRegisterDto {
     private String address;
 
     @NotNull(message = "Bar number required")
-    private Integer numero;
+    private Integer number;
 
     @NotBlank(message = "District is required")
     private String district;
@@ -29,7 +29,7 @@ public class BarRegisterDto {
     private String city;
 
     @NotNull(message = "State is required")
-    private States state;
+    private States states;
 
     @Size(max = 20, message = "The phone number must have a maximum of 20 characters")
     private String phone;
