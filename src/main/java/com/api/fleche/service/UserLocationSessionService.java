@@ -59,12 +59,21 @@ public class UserLocationSessionService {
         }
     }
 
-    public void checkout(Long userId, Long locationId) {
-        userLocationSessionRepository.checkinOrCheckout(StatusUserLocation.OFFLINE.name(), locationId,  userId);
+    public void checkout(Long userId) {
+        var user = userService.findById(userId);
+        if (user.isEmpty()) {
+            throw new UserNotFounException("User not found");
+        }
+
+        var location = findByLocationId(userId);
+        if (location == null) {
+            throw new LocationNotFoundException("Location not found");
+        }
+        userLocationSessionRepository.checkinOrCheckout(StatusUserLocation.OFFLINE.name(), location,  userId);
     }
 
-    public Long findByBarId(Long userId) {
-        return userLocationSessionRepository.findByBarId(userId);
+    public Long findByLocationId(Long userId) {
+        return userLocationSessionRepository.findByLocationId(userId);
     }
 
     public void save(UserLocationSession userLocationSession) {

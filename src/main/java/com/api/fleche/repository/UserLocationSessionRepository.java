@@ -21,7 +21,7 @@ public interface UserLocationSessionRepository extends JpaRepository<UserLocatio
     void checkinOrCheckout(String status, Long locationId, Long userId);
 
     @Query(value = "SELECT LOCATION_ID FROM USER_LOCATION_SESSION WHERE USER_ID = ?", nativeQuery = true)
-    Long findByBarId(Long userId);
+    Long findByLocationId(Long userId);
 
     @Query(value = "SELECT QR_CODE FROM LOCATION WHERE ID = ?", nativeQuery = true)
     String qrCodeBar(Long locationId);

@@ -4,11 +4,9 @@ import com.api.fleche.model.dtos.LocationDto;
 import com.api.fleche.model.dtos.StandardError;
 import com.api.fleche.model.dtos.UserBarDto;
 import com.api.fleche.model.dtos.UserLocationSessionDto;
-import com.api.fleche.enums.StatusUserLocation;
-import com.api.fleche.model.UserLocationSession;
 import com.api.fleche.service.LocationService;
-import com.api.fleche.service.UserService;
 import com.api.fleche.service.UserLocationSessionService;
+import com.api.fleche.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,8 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,21 +52,13 @@ public class UserLocationSessionController {
     })
     public ResponseEntity<Object> checkinUser(@RequestBody @Valid UserLocationSessionDto userLocationSessionDto) {
         userLocationSessionService.checkin(userLocationSessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body("Check-in realizado!");
+        return ResponseEntity.status(HttpStatus.OK).body("Check-in realized!");
     }
 
-    @PatchMapping("/checkout/{usuarioId}")
-    public ResponseEntity<Object> checkoutUser(@PathVariable Long usuarioId) {
-        var usuario = userService.findById(usuarioId);
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
-        }
-        var bar = userLocationSessionService.findByBarId(usuarioId);
-        if (bar == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");
-        }
-        userLocationSessionService.checkout(usuarioId, bar);
-        return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
+    @PatchMapping("/checkout/{userId}")
+    public ResponseEntity<Object> checkoutUser(@PathVariable Long userId) {
+        userLocationSessionService.checkout(userId);
+        return ResponseEntity.status(HttpStatus.OK).body("Check-out realized");
     }
 
     @GetMapping("/users/online/{userId}")
@@ -79,7 +67,7 @@ public class UserLocationSessionController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        var bar = userLocationSessionService.findByBarId(user.get().getId());
+        var bar = userLocationSessionService.findByLocationId(user.get().getId());
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -89,14 +77,14 @@ public class UserLocationSessionController {
         return ResponseEntity.ok(usuarioBarDtos);
     }
 
-    @GetMapping("/usuarios/{usuarioId}/online")
-    public ResponseEntity<List<LocationDto>> usuariosOnline(@PathVariable Long usuarioId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userLocationSessionService.listTotalUserBar(usuarioId));
+    @GetMapping("/usuarios/{userId}/online")
+    public ResponseEntity<List<LocationDto>> userssOnline(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userLocationSessionService.listTotalUserBar(userId));
     }
 
-    @GetMapping("/usuario/{usuarioId}/autenticado")
-    public ResponseEntity<Object> verificaSeUsuarioEstaOnline(@PathVariable Long usuarioId) {
-        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userLocationSessionService.verificaSeUsuarioEstaOnline(usuarioId)));
+    @GetMapping("/usuario/{userId}/autenticado")
+    public ResponseEntity<Object> verifyIfUserOnline(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userLocationSessionService.verificaSeUsuarioEstaOnline(userId)));
     }
 
 }
