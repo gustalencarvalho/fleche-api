@@ -1,6 +1,6 @@
 package com.api.fleche.infra.security;
 
-import com.api.fleche.models.Usuario;
+import com.api.fleche.model.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -18,14 +18,14 @@ public class TokenService {
     @Value("${auth.key.secret}")
     private String secret;
 
-    public String generateToken(Usuario usuario) {
+    public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("fleche-api")
-                    .withSubject(usuario.getTelefone())
-                    .withClaim("ROLE", usuario.getRole().name())
-                    .withClaim("id", usuario.getId())
+                    .withSubject(user.getPhone())
+                    .withClaim("ROLE", user.getRole().name())
+                    .withClaim("id", user.getId())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
 

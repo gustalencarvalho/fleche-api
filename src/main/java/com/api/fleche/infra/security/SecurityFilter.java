@@ -1,6 +1,6 @@
 package com.api.fleche.infra.security;
 
-import com.api.fleche.repositories.UsuarioRepository;
+import com.api.fleche.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,14 +19,14 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokekService;
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if (token != null) {
             var telefone = tokekService.validateToken(token);
-            UserDetails usuario = usuarioRepository.findUsuarioSemPerfil(telefone).get();
+            UserDetails usuario = userRepository.findUserNotProfile(telefone).get();
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

@@ -19,3 +19,9 @@ server:
 auth:
   key:
     secret: "#flecheApp$"
+
+springdoc:
+  openapi:
+    title: 'Fleche API'
+    description: 'O novo sucesso da galera'
+    version: '1.0.0'
