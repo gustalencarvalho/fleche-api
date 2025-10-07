@@ -1,7 +1,7 @@
 package com.api.fleche.dao;
 
 import com.api.fleche.model.dtos.LocationDto;
-import com.api.fleche.model.dtos.UserBarDto;
+import com.api.fleche.model.dtos.UserLocationDto;
 import com.api.fleche.repository.CommandSqlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,14 +19,14 @@ public class UserLocationSessionDao {
     private final JdbcTemplate jdbcTemplate;
     private final CommandSqlRepository commandSqlRepository;
 
-    public Page<UserBarDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable) {
+    public Page<UserLocationDto> usuariosParaListar(String qrCode, Long usuarioId, Pageable pageable) {
         String sql = commandSqlRepository.allUsers().getCmdSql();
-        List<UserBarDto> resultados = jdbcTemplate.query(sql, new Object[]{qrCode, usuarioId, usuarioId}, (rs, rowNum) ->
-                new UserBarDto(
+        List<UserLocationDto> resultados = jdbcTemplate.query(sql, new Object[]{qrCode, usuarioId, usuarioId}, (rs, rowNum) ->
+                new UserLocationDto(
                         rs.getLong("ID"),
-                        rs.getString("NOME"),
-                        rs.getString("GENERO"),
-                        rs.getInt("IDADE")
+                        rs.getString("NAME"),
+                        rs.getString("GENDER"),
+                        rs.getInt("AGE")
                 )
         );
 
@@ -36,7 +36,7 @@ public class UserLocationSessionDao {
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), resultados.size());
-        List<UserBarDto> usuariosPaginados = resultados.subList(start, end);
+        List<UserLocationDto> usuariosPaginados = resultados.subList(start, end);
         return new PageImpl<>(usuariosPaginados, pageable, resultados.size());
     }
 
@@ -45,11 +45,11 @@ public class UserLocationSessionDao {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             LocationDto dto = new LocationDto();
-            dto.setId(rs.getLong("BAR_ID"));
-            dto.setName(rs.getString("NOME"));
-            dto.setAddress(rs.getString("ENDERECO"));
-            dto.setDistrict(rs.getString("BAIRRO"));
-            dto.setCity(rs.getString("CIDADE"));
+            dto.setId(rs.getLong("LOCATION_ID"));
+            dto.setName(rs.getString("NAME"));
+            dto.setAddress(rs.getString("ADDRESS"));
+            dto.setDistrict(rs.getString("DISTRICT"));
+            dto.setCity(rs.getString("CITY"));
             dto.setQrCode(rs.getString("QR_CODE"));
             dto.setUsersOnline(rs.getLong("TOTAL_USUARIOS"));
             return dto;

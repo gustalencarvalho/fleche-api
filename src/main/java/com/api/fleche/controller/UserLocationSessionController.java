@@ -2,7 +2,7 @@ package com.api.fleche.controller;
 
 import com.api.fleche.model.dtos.LocationDto;
 import com.api.fleche.model.dtos.StandardError;
-import com.api.fleche.model.dtos.UserBarDto;
+import com.api.fleche.model.dtos.UserLocationDto;
 import com.api.fleche.model.dtos.UserLocationSessionDto;
 import com.api.fleche.service.LocationService;
 import com.api.fleche.service.UserLocationSessionService;
@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/session")
-@Tag(name = "UserLocationSessionController", description = "Controller responsible for checkin in user")
+@Tag(name = "UserLocationSessionController", description = "Controller responsible for check-in/check-out in user")
 @RequiredArgsConstructor
 public class UserLocationSessionController {
 
@@ -61,28 +61,19 @@ public class UserLocationSessionController {
         return ResponseEntity.status(HttpStatus.OK).body("Check-out realized");
     }
 
-    @GetMapping("/users/online/{userId}")
-    public ResponseEntity<Page<UserBarDto>> usersList(@PathVariable Long userId, @RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
-        var user = userService.findById(userId);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        var bar = userLocationSessionService.findByLocationId(user.get().getId());
-        if (bar == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        String qrCode = userLocationSessionService.qrCodeBar(bar);
-        Pageable pageable = PageRequest.of(page, size);
-        Page<UserBarDto> usuarioBarDtos = userLocationSessionService.usuariosParaListar(qrCode, userId, pageable);
+    @GetMapping("/user/online/{userId}")
+    public ResponseEntity<Page<UserLocationDto>> usersList(@PathVariable Long userId) {
+        Pageable pageable = PageRequest.of(1, 10);
+        Page<UserLocationDto> usuarioBarDtos = userLocationSessionService.usersOnlineList(userId, pageable);
         return ResponseEntity.ok(usuarioBarDtos);
     }
 
-    @GetMapping("/usuarios/{userId}/online")
+    @GetMapping("/user/{userId}/online")
     public ResponseEntity<List<LocationDto>> userssOnline(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userLocationSessionService.listTotalUserBar(userId));
     }
 
-    @GetMapping("/usuario/{userId}/autenticado")
+    @GetMapping("/user/{userId}/authenticated")
     public ResponseEntity<Object> verifyIfUserOnline(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userLocationSessionService.verificaSeUsuarioEstaOnline(userId)));
     }

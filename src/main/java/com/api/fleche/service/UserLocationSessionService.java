@@ -4,7 +4,7 @@ import com.api.fleche.dao.UserLocationSessionDao;
 import com.api.fleche.model.Location;
 import com.api.fleche.model.User;
 import com.api.fleche.model.dtos.LocationDto;
-import com.api.fleche.model.dtos.UserBarDto;
+import com.api.fleche.model.dtos.UserLocationDto;
 import com.api.fleche.enums.StatusUserLocation;
 import com.api.fleche.model.UserLocationSession;
 import com.api.fleche.model.dtos.UserLocationSessionDto;
@@ -15,8 +15,6 @@ import com.api.fleche.repository.UserLocationSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -88,7 +86,16 @@ public class UserLocationSessionService {
         return userLocationSessionDao.listarTotalUsuariosPorBar(userId);
     }
 
-    public Page<UserBarDto> usuariosParaListar(String qrCode, Long userId, Pageable pageable) {
+    public Page<UserLocationDto> usersOnlineList(Long userId, Pageable pageable) {
+        var user = userService.findById(userId);
+        if (user.isEmpty()) {
+            throw new UserNotFounException("User not found");
+        }
+        var location = findByLocationId(user.get().getId());
+        if (location == null) {
+            throw new LocationNotFoundException("Location not found");
+        }
+        String qrCode = qrCodeBar(location);
         return userLocationSessionDao.usuariosParaListar(qrCode, userId, pageable);
     }
 
