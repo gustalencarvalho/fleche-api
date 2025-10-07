@@ -1,13 +1,20 @@
 package com.api.fleche.controller;
 
 import com.api.fleche.model.dtos.LocationDto;
+import com.api.fleche.model.dtos.StandardError;
 import com.api.fleche.model.dtos.UserBarDto;
-import com.api.fleche.model.dtos.UserBarSessionDto;
+import com.api.fleche.model.dtos.UserLocationSessionDto;
 import com.api.fleche.enums.StatusUserLocation;
 import com.api.fleche.model.UserLocationSession;
 import com.api.fleche.service.LocationService;
 import com.api.fleche.service.UserService;
-import com.api.fleche.service.UserBarSessionService;
+import com.api.fleche.service.UserLocationSessionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,44 +29,34 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/session")
+@Tag(name = "UserLocationSessionController", description = "Controller responsible for checkin in user")
 @RequiredArgsConstructor
 public class UserLocationSessionController {
 
-    private final UserBarSessionService userBarSessionService;
+    private final UserLocationSessionService userLocationSessionService;
     private final LocationService locationService;
     private final UserService userService;
 
     @PostMapping("/checkin")
-    public ResponseEntity<Object> checkinUser(@RequestBody @Valid UserBarSessionDto userBarSessionDto) {
-        String status = userBarSessionService.findByStatusUserBar(userBarSessionDto.getUserId());
-        if (status != null && !status.isEmpty() && status.equals("ONLINE")) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Usuário já está ativo em outro bar!");
-        }
-        var bar = locationService.findbyQrCode(userBarSessionDto.getQrCode());
-
-        if (bar == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");
-        }
-        var usuario = userService.findById(userBarSessionDto.getUserId());
-
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
-        }
-        var usuarioBarSessaoModel = new UserLocationSession();
-        usuarioBarSessaoModel.setLocation(bar);
-        usuarioBarSessaoModel.setUser(usuario.get());
-        usuarioBarSessaoModel.setDateActive(LocalDateTime.now(ZoneId.of("UTC")));
-        usuarioBarSessaoModel.setDateExpires(LocalDateTime.now().plusHours(4));
-        usuarioBarSessaoModel.setStatusUserLocation(StatusUserLocation.ONLINE);
-
-        if (status == null) {
-            userBarSessionService.save(usuarioBarSessaoModel);
-        } else {
-            userBarSessionService.checkin(usuario.get().getId(), bar.getId());
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", "Check-in realizado!"));
+    @Operation(summary = "Checkin user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Checkin"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)))
+    })
+    public ResponseEntity<Object> checkinUser(@RequestBody @Valid UserLocationSessionDto userLocationSessionDto) {
+        userLocationSessionService.checkin(userLocationSessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body("Check-in realizado!");
     }
 
     @PatchMapping("/checkout/{usuarioId}")
@@ -68,11 +65,11 @@ public class UserLocationSessionController {
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Usuário não encontrado na base de dados!");
         }
-        var bar = userBarSessionService.findByBarId(usuarioId);
+        var bar = userLocationSessionService.findByBarId(usuarioId);
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Bar não encontrado na base de dados!");
         }
-        userBarSessionService.checkout(usuarioId, bar);
+        userLocationSessionService.checkout(usuarioId, bar);
         return ResponseEntity.status(HttpStatus.OK).body("Você agora está offline");
     }
 
@@ -82,24 +79,24 @@ public class UserLocationSessionController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        var bar = userBarSessionService.findByBarId(user.get().getId());
+        var bar = userLocationSessionService.findByBarId(user.get().getId());
         if (bar == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        String qrCode = userBarSessionService.qrCodeBar(bar);
+        String qrCode = userLocationSessionService.qrCodeBar(bar);
         Pageable pageable = PageRequest.of(page, size);
-        Page<UserBarDto> usuarioBarDtos = userBarSessionService.usuariosParaListar(qrCode, userId, pageable);
+        Page<UserBarDto> usuarioBarDtos = userLocationSessionService.usuariosParaListar(qrCode, userId, pageable);
         return ResponseEntity.ok(usuarioBarDtos);
     }
 
     @GetMapping("/usuarios/{usuarioId}/online")
     public ResponseEntity<List<LocationDto>> usuariosOnline(@PathVariable Long usuarioId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userBarSessionService.listTotalUserBar(usuarioId));
+        return ResponseEntity.status(HttpStatus.OK).body(userLocationSessionService.listTotalUserBar(usuarioId));
     }
 
     @GetMapping("/usuario/{usuarioId}/autenticado")
     public ResponseEntity<Object> verificaSeUsuarioEstaOnline(@PathVariable Long usuarioId) {
-        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userBarSessionService.verificaSeUsuarioEstaOnline(usuarioId)));
+        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userLocationSessionService.verificaSeUsuarioEstaOnline(usuarioId)));
     }
 
 }

@@ -3,7 +3,6 @@ package com.api.fleche.service;
 import com.api.fleche.model.Location;
 import com.api.fleche.model.dtos.LocationRegisterDto;
 import com.api.fleche.model.dtos.LocationDto;
-import com.api.fleche.model.exception.CnpjAlreadyExistsException;
 import com.api.fleche.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -25,9 +24,9 @@ public class LocationService {
         return locationRepository.save(location);
     }
 
-    public Location findbyQrCode(String qrCode) {
-        Optional<Location> bar = locationRepository.findByQrCode(qrCode);
-        return bar.get();
+    public Location findByQrCode(String qrCode) {
+        Optional<Location> location = locationRepository.findByQrCode(qrCode);
+        return location.get();
     }
 
     public List<LocationDto> findAll() {

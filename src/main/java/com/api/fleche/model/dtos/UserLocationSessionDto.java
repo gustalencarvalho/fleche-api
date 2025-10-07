@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UserBarSessionDto {
+public class UserLocationSessionDto {
 
     @NotNull(message = "User id required")
     private Long userId;

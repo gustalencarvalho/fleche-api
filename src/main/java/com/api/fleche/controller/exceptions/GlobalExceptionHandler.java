@@ -18,12 +18,12 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CnpjAlreadyExistsException.class)
-    ResponseEntity<StandardError> handleCnpjAlreadyExists(final CnpjAlreadyExistsException ex, final HttpServletRequest request) {
-        return ResponseEntity.status(CONFLICT).body(StandardError.builder()
+    @ExceptionHandler(LocationNotFoundException.class)
+    ResponseEntity<StandardError> handleCnpjAlreadyExists(final LocationNotFoundException ex, final HttpServletRequest request) {
+        return ResponseEntity.status(NOT_FOUND).body(StandardError.builder()
                 .timestamp(now())
-                .status(CONFLICT.value())
-                .error(CONFLICT.getReasonPhrase())
+                .status(NOT_FOUND.value())
+                .error(NOT_FOUND.getReasonPhrase())
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build());
@@ -87,5 +87,16 @@ public class GlobalExceptionHandler {
             error.addError(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(UserOnlineInOtherLocalException.class)
+    ResponseEntity<StandardError> handleUserOnlineInOtherLocalException(final UserOnlineInOtherLocalException ex, final HttpServletRequest request) {
+        return ResponseEntity.status(CONFLICT).body(StandardError.builder()
+                .timestamp(now())
+                .status(CONFLICT.value())
+                .error(CONFLICT.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build());
     }
 }
