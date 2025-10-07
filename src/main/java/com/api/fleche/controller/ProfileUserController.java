@@ -41,22 +41,9 @@ public class ProfileUserController {
     @PostMapping("/register")
     public ResponseEntity<Void> register(
             @RequestPart("profile") @Valid ProfileUserDto profileUserDto,
-            @RequestPart(value = "picture", required = false) MultipartFile pic) {
-        try {
-            var user = userService.findById(profileUserDto.getId());
-            var profileUser = new ProfileUser();
-            profileUser.setGender(profileUserDto.getGender().name());
-            profileUser.setBio(profileUserDto.getBio());
-            profileUser.setPreferences(profileUserDto.getPreferences().name());
-            if (pic != null && !pic.isEmpty()) {
-                profileUser.setPicture(pic.getBytes());
-            }
-            profileUser.setUserId(user.get());
-            profileUserService.saveProfile(profileUser);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+            @RequestPart(value = "picture", required = false) MultipartFile pic) throws IOException {
+        profileUserService.saveProfile(profileUserDto, pic);
+        return ResponseEntity.ok().build();
     }
 
 

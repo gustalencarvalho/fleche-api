@@ -1,9 +1,9 @@
 package com.api.fleche.services.Impl;
 
-import com.api.fleche.model.dtos.BarRegisterDto;
-import com.api.fleche.model.Bar;
-import com.api.fleche.repository.BarRepository;
-import com.api.fleche.service.BarService;
+import com.api.fleche.model.dtos.LocationRegisterDto;
+import com.api.fleche.model.Location;
+import com.api.fleche.repository.LocationRepository;
+import com.api.fleche.service.LocationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,18 +14,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
-class BarServiceTest {
+class LocationServiceTest {
 
     @InjectMocks
-    private BarService barService;
+    private LocationService locationService;
 
     @Mock
-    private BarRepository barRepository;
+    private LocationRepository locationRepository;
 
     @Test
     @DisplayName("Cria cadastro do bar")
-    BarRegisterDto criaCadastroDeUmBarBar(BarRegisterDto bar) {
-        Bar registro = barService.registerBar(bar);
+    LocationRegisterDto criaCadastroDeUmBarBar(LocationRegisterDto bar) {
+        Location registro = locationService.registerBar(bar);
         return bar;
     }
 }

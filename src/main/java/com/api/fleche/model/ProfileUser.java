@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_PROFILE_USER")
+@Table(name = "PROFILE_USER")
 public class ProfileUser {
 
     @Id

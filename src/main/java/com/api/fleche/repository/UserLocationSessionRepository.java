@@ -1,6 +1,6 @@
 package com.api.fleche.repository;
 
-import com.api.fleche.model.UserBarSession;
+import com.api.fleche.model.UserLocationSession;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface UserBarSessionRepository extends JpaRepository<UserBarSession, Long> {
-    Optional<UserBarSession> findByUserIdAndDateExpiresAfter(Long usuarioId, LocalDateTime now);
+public interface UserLocationSessionRepository extends JpaRepository<UserLocationSession, Long> {
+    Optional<UserLocationSession> findByUserIdAndDateExpiresAfter(Long usuarioId, LocalDateTime now);
 
     @Query(value = "SELECT STATUS_USER_BAR FROM USER_BAR_SESSION WHERE USER_ID = ?", nativeQuery = true)
     String findByUserId(Long userId);

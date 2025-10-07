@@ -5,19 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BarsDto {
-
+public class LocationDto {
     private Long id;
     private String name;
     private String address;
     private String district;
     private String city;
-    private Integer phone;
     private String qrCode;
+    private List<String> coordinate;
     private Long usersOnline;
-
 }

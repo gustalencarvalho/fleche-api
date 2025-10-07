@@ -1,6 +1,6 @@
 package com.api.fleche.dao;
 
-import com.api.fleche.model.dtos.BarsDto;
+import com.api.fleche.model.dtos.LocationDto;
 import com.api.fleche.model.dtos.UserBarDto;
 import com.api.fleche.repository.CommandSqlRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class UserBarSessionDao {
+public class UserLocationSessionDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final CommandSqlRepository commandSqlRepository;
@@ -40,17 +40,16 @@ public class UserBarSessionDao {
         return new PageImpl<>(usuariosPaginados, pageable, resultados.size());
     }
 
-    public List<BarsDto> listarTotalUsuariosPorBar(Long usuarioId) {
+    public List<LocationDto> listarTotalUsuariosPorBar(Long usuarioId) {
         String sql = commandSqlRepository.usersOnline().getCmdSql();
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            BarsDto dto = new BarsDto();
+            LocationDto dto = new LocationDto();
             dto.setId(rs.getLong("BAR_ID"));
             dto.setName(rs.getString("NOME"));
             dto.setAddress(rs.getString("ENDERECO"));
             dto.setDistrict(rs.getString("BAIRRO"));
             dto.setCity(rs.getString("CIDADE"));
-            dto.setPhone(rs.getInt("NUMERO"));
             dto.setQrCode(rs.getString("QR_CODE"));
             dto.setUsersOnline(rs.getLong("TOTAL_USUARIOS"));
             return dto;

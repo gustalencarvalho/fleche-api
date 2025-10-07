@@ -1,11 +1,11 @@
 package com.api.fleche.service;
 
-import com.api.fleche.dao.UserBarSessionDao;
-import com.api.fleche.model.dtos.BarsDto;
+import com.api.fleche.dao.UserLocationSessionDao;
+import com.api.fleche.model.dtos.LocationDto;
 import com.api.fleche.model.dtos.UserBarDto;
-import com.api.fleche.enums.StatusUserBar;
-import com.api.fleche.model.UserBarSession;
-import com.api.fleche.repository.UserBarSessionRepository;
+import com.api.fleche.enums.StatusUserLocation;
+import com.api.fleche.model.UserLocationSession;
+import com.api.fleche.repository.UserLocationSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,48 +18,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserBarSessionService {
 
-    private final UserBarSessionRepository userBarSessionRepository;
-    private final UserBarSessionDao userBarSessionDao;
-
+    private final UserLocationSessionRepository userLocationSessionRepository;
+    private final UserLocationSessionDao userLocationSessionDao;
 
     public boolean findByUserIdAndDataExpireAfter(Long usuarioId) {
-        return userBarSessionRepository.findByUserIdAndDateExpiresAfter(usuarioId, LocalDateTime.now()).isPresent();
+        return userLocationSessionRepository.findByUserIdAndDateExpiresAfter(usuarioId, LocalDateTime.now()).isPresent();
     }
 
     public String findByStatusUserBar(Long userId) {
-        String status = userBarSessionRepository.findByUserId(userId);
+        String status = userLocationSessionRepository.findByUserId(userId);
         return status;
     }
 
     public void checkin(Long userId, Long barId) {
-        userBarSessionRepository.checkinOrCheckout(StatusUserBar.ONLINE.name(), barId, userId);
+        userLocationSessionRepository.checkinOrCheckout(StatusUserLocation.ONLINE.name(), barId, userId);
     }
 
     public void checkout(Long userId, Long barId) {
-        userBarSessionRepository.checkinOrCheckout(StatusUserBar.OFFLINE.name(), barId,  userId);
+        userLocationSessionRepository.checkinOrCheckout(StatusUserLocation.OFFLINE.name(), barId,  userId);
     }
 
     public Long findByBarId(Long userId) {
-        return userBarSessionRepository.findByBarId(userId);
+        return userLocationSessionRepository.findByBarId(userId);
     }
 
-    public void save(UserBarSession userBarSession) {
-        userBarSessionRepository.save(userBarSession);
+    public void save(UserLocationSession userLocationSession) {
+        userLocationSessionRepository.save(userLocationSession);
     }
 
     public String qrCodeBar(Long barId) {
-        return userBarSessionRepository.qrCodeBar(barId);
+        return userLocationSessionRepository.qrCodeBar(barId);
     }
 
-    public List<BarsDto> listTotalUserBar(Long userId) {
-        return userBarSessionDao.listarTotalUsuariosPorBar(userId);
+    public List<LocationDto> listTotalUserBar(Long userId) {
+        return userLocationSessionDao.listarTotalUsuariosPorBar(userId);
     }
 
     public Page<UserBarDto> usuariosParaListar(String qrCode, Long userId, Pageable pageable) {
-        return userBarSessionDao.usuariosParaListar(qrCode, userId, pageable);
+        return userLocationSessionDao.usuariosParaListar(qrCode, userId, pageable);
     }
 
     public String verificaSeUsuarioEstaOnline(Long userId) {
-        return userBarSessionRepository.verifyIfUserOnline(userId);
+        return userLocationSessionRepository.verifyIfUserOnline(userId);
     }
 }

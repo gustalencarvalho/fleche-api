@@ -1,6 +1,6 @@
 package com.api.fleche.enums;
 
-public enum StatusUserBar {
+public enum StatusUserLocation {
     ONLINE,
     OFFLINE
 }

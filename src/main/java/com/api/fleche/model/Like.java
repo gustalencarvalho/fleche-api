@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "TB_LIKES", uniqueConstraints = {
+@Table(name = "LIKES", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id_origem", "user_id_destiny"})
 })
 public class Like {

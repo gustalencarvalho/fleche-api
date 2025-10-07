@@ -7,18 +7,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "TB_BARS")
-public class Bar implements Serializable {
+@Table(name = "LOCATION")
+public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -28,14 +31,8 @@ public class Bar implements Serializable {
     @Column(nullable = false, length = 150)
     private String name;
 
-    @Column(nullable = false, length = 20, unique = true)
-    private String cnpj;
-
     @Column(nullable = false)
     private String address;
-
-    @Column(nullable = false)
-    private Integer number;
 
     @Column(nullable = false)
     private String district;
@@ -43,16 +40,17 @@ public class Bar implements Serializable {
     @Column(nullable = false)
     private String city;
 
+    @Column(nullable = false, columnDefinition = "text[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private List<String> coordinate;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status = Status.ACTIVE;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private States states;
-
-    @Column(length = 20)
-    private String phone;
+    private States state;
 
     @Column(nullable = false, unique = true)
     private String qrCode;

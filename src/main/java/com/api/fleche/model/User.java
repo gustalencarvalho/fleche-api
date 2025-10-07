@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "TB_USERS")
+@Table(name = "USERS")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
