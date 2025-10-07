@@ -36,6 +36,4 @@ public class ProfileUserDto {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Preferences preferences;
-
-
 }

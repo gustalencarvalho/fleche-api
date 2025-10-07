@@ -2,7 +2,6 @@ package com.api.fleche.controller;
 
 import com.api.fleche.model.dtos.LocationDto;
 import com.api.fleche.model.dtos.StandardError;
-import com.api.fleche.model.dtos.UserLocationDto;
 import com.api.fleche.model.dtos.UserLocationSessionDto;
 import com.api.fleche.service.LocationService;
 import com.api.fleche.service.UserLocationSessionService;
@@ -15,9 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +36,7 @@ public class UserLocationSessionController {
     @PostMapping("/checkin")
     @Operation(summary = "Checkin user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Checkin"),
+            @ApiResponse(responseCode = "200", description = "Check-in user"),
             @ApiResponse(responseCode = "400", description = "Bad Request",
                     content = @Content(
                             mediaType = APPLICATION_JSON_VALUE,
@@ -56,26 +52,50 @@ public class UserLocationSessionController {
     }
 
     @PatchMapping("/checkout/{userId}")
+    @Operation(summary = "Check-out user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Check-out user"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)))
+    })
     public ResponseEntity<Object> checkoutUser(@PathVariable Long userId) {
         userLocationSessionService.checkout(userId);
         return ResponseEntity.status(HttpStatus.OK).body("Check-out realized");
     }
 
-    @GetMapping("/user/online/{userId}")
-    public ResponseEntity<Page<UserLocationDto>> usersList(@PathVariable Long userId) {
-        Pageable pageable = PageRequest.of(1, 10);
-        Page<UserLocationDto> usuarioBarDtos = userLocationSessionService.usersOnlineList(userId, pageable);
-        return ResponseEntity.ok(usuarioBarDtos);
-    }
+//    @GetMapping("/user/online/{userId}")
+//    public ResponseEntity<Page<UserLocationDto>> usersList(@PathVariable Long userId) {
+//        Pageable pageable = PageRequest.of(1, 10);
+//        Page<UserLocationDto> usuarioBarDtos = userLocationSessionService.usersOnlineList(userId, pageable);
+//        return ResponseEntity.ok(usuarioBarDtos);
+//    }
 
     @GetMapping("/user/{userId}/online")
+    @Operation(summary = "Users online list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users online"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)))
+    })
     public ResponseEntity<List<LocationDto>> userssOnline(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userLocationSessionService.listTotalUserBar(userId));
     }
 
     @GetMapping("/user/{userId}/authenticated")
     public ResponseEntity<Object> verifyIfUserOnline(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userLocationSessionService.verificaSeUsuarioEstaOnline(userId)));
+        return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("message", userLocationSessionService.verifyIfUserOnline(userId)));
     }
 
 }

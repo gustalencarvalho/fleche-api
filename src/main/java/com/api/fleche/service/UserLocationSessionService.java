@@ -99,7 +99,7 @@ public class UserLocationSessionService {
         return userLocationSessionDao.usuariosParaListar(qrCode, userId, pageable);
     }
 
-    public String verificaSeUsuarioEstaOnline(Long userId) {
+    public String verifyIfUserOnline(Long userId) {
         return userLocationSessionRepository.verifyIfUserOnline(userId);
     }
 

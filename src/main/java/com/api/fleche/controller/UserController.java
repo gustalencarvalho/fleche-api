@@ -46,7 +46,7 @@ public class UserController {
     })
     public ResponseEntity<Object> register(@RequestBody @Valid UserDto userDto) {
         userService.createAccount(userDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Get data user by id")

@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
     // Busca se já existe um like entre os usuários
-    Optional<Like> findByUserOrigemAndUserDestiny(User userOrigem, User userDestiny);
+    Optional<Like> findByUserOriginAndUserDestiny(User userOrigin, User userDestiny);
 
     // Verifica se há um match entre dois usuários
-    boolean existsByUserOrigemAndUserDestinyAndStatus(User userOrigem, User userDestiny, StatusLike statusLike);
+    boolean existsByUserOriginAndUserDestinyAndStatus(User userOrigin, User userDestiny, StatusLike statusLike);
 
 }
